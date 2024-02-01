@@ -39,6 +39,7 @@
 #define FOOTER_H               80
 #define ROWS                   50
 #define COLS                   36
+#define CELL_SIZE              SCENE_W / COLS
 #define PLAYER_MAX_HP_POINTS   100
 #define PLAYER_START_HP_POINTS 100
 #define HP_FULL_COLOR          0Xd60000
@@ -105,6 +106,10 @@ int mouse_hook(int x, int y);
 // defined in minotaur_actions_move.c
 void move(t_movement direction);
 void set_trap(void);
+// defined in mlx_common.c
+void init_graphics(void);
+void init_hooks(void);
+void destroy_mlx(void);
 // defined in mlx_render.c
 void refresh(t_component component, t_point coords);
 void render_gamescreen(void);

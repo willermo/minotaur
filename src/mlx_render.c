@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/01 18:51:19 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/01 23:33:39 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,42 +32,48 @@ draw_background(t_image *img, t_rgba color, int random, int progressive) {
     }
 }
 
-static void
-draw_stats() {
-    int j;
-    int size[2];
+// static void
+// draw_stats() {
+//     int j;
+//     int size[2];
 
-    j = 0;
-    size[0] = STATS_BAR_LENGTH / PLAYER_MAX_HP_POINTS;
-    size[1] = STATS_BAR_HEIGHT;
-    while (j <= PLAYER_MAX_HP_POINTS) {
-        if (game->player->health >= j)
-            draw_rectangle(game->refresh,
-                           (t_point){STATS_OFFSET_X + j * size[0], HP_OFFSET_Y},
-                           HP_FULL_COLOR, size);
-        else
-            draw_rectangle(game->refresh,
-                           (t_point){STATS_OFFSET_X + j * size[0], HP_OFFSET_Y},
-                           HP_EMPTY_COLOR, size);
-        j++;
-    }
-}
+//     j = 0;
+//     size[0] = STATS_BAR_LENGTH / PLAYER_MAX_HP_POINTS;
+//     size[1] = STATS_BAR_HEIGHT;
+//     while (j <= PLAYER_MAX_HP_POINTS) {
+//         if (game->player->health >= j)
+//             draw_rectangle(game->refresh,
+//                            (t_point){STATS_OFFSET_X + j * size[0],
+//                            HP_OFFSET_Y}, HP_FULL_COLOR, size);
+//         else
+//             draw_rectangle(game->refresh,
+//                            (t_point){STATS_OFFSET_X + j * size[0],
+//                            HP_OFFSET_Y}, HP_EMPTY_COLOR, size);
+//         j++;
+//     }
+// }
 
 static void
-draw_scene(t_image *img, int size[2]) {
+draw_scene(t_image *img) {
     int i;
     int j;
 
     i = 0;
-    while (i < size[1]) {
+    while (i < ROWS) {
         j = 0;
-        while (j < size[0]) {
+        while (j < COLS) {
             if (game->map->grid[i][j] == '1')
-                draw_rectangle(img, (t_point){j, i}, 0x000000, (int[2]){1, 1});
+                draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
+                            0x000000, CELL_SIZE);
             else if (game->map->grid[i][j] == 'P')
-                draw_rectangle(img, (t_point){j, i}, 0x00FF00, (int[2]){1, 1});
+                draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
+                            0x00FF00, CELL_SIZE);
             else if (game->map->grid[i][j] == 'E')
-                draw_rectangle(img, (t_point){j, i}, 0xFF0000, (int[2]){1, 1});
+                draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
+                            0xFF0000, CELL_SIZE);
+            else if (game->map->grid[i][j] == '0')
+                draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
+                            0xFFFFFF, CELL_SIZE);
             j++;
         }
         i++;
@@ -89,15 +95,15 @@ setup_refresh(t_component comp, t_image ***ptr) {
         break;
     case HEADER:
         *ptr = &game->header;
-        if (game->gamescene != GAME)
+        if (game->gamescene != GAME) {
             game->refresh = load_xpm_image(&game->display, XPM_HEADER);
-        else {
+        } else {
             game->refresh = load_xpm_image(&game->display, XPM_PLAYERSTATS);
-            draw_stats(game);
+            // draw_stats(game);
         }
         break;
     case SCENE:
-        *ptr = &game->screen;
+        *ptr = &game->scene;
         if (game->gamescene == MAIN)
 
             game->refresh = load_xpm_image(&game->display, XPM_MAIN_SCENE);
@@ -105,15 +111,14 @@ setup_refresh(t_component comp, t_image ***ptr) {
             game->refresh = load_xpm_image(&game->display, XPM_WIP);
         else {
             game->refresh = create_image(&game->display, SCENE_W, SCENE_H);
-            draw_scene(game->refresh, (int[2]){SCENE_W, SCENE_H});
+            draw_scene(game->refresh);
         }
         break;
     case FOOTER:
         *ptr = &game->footer;
-        if (game->gamescene == MAIN)
-
+        if (game->gamescene == MAIN) {
             game->refresh = load_xpm_image(&game->display, XPM_FOOTER);
-        else {
+        } else {
             game->refresh = create_image(&game->display, FOOTER_W, FOOTER_H);
             draw_footer(game->refresh, (int[2]){FOOTER_W, FOOTER_H});
         }

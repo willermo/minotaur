@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:26:21 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/01 20:26:21 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/01 23:49:03 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ setup_maze() {
 
 static void
 init_player(void) {
-    game->map->player->x = game->map->player_startpos[0];
-    game->map->player->y = game->map->player_startpos[1];
+    game->map->player->x = 1;
+    game->map->player->y = ROWS - 1;
     game->map->player->health = PLAYER_START_HP_POINTS;
 }
 
@@ -81,7 +81,10 @@ clean_game(void) {
 static void
 start_game(void) {
     setup_maze();
+    init_graphics();
     render_gamescreen();
+    init_hooks();
+    mlx_loop(game->display.mlx);
 }
 
 int
