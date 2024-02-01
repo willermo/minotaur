@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:26:21 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/01 23:49:03 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 00:02:45 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ init_map(void) {
     game->map->grid = (char **) malloc(sizeof(char *) * ROWS);
     for (int i = 0; i < ROWS; i++)
         game->map->grid[i] = (char *) malloc(sizeof(char) * COLS);
+    game->map->start_pos[0] = 1;
+    game->map->start_pos[1] = ROWS - 1;
+    game->map->end_pos[0] = COLS - 2;
+    game->map->end_pos[1] = 0;
 }
 
 static void

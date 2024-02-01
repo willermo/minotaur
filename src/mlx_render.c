@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/01 23:33:39 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 00:06:14 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ setup_refresh(t_component comp, t_image ***ptr) {
             game->refresh = load_xpm_image(&game->display, XPM_MAIN_SCENE);
         else if (game->gamescene == INSTRUCTIONS)
             game->refresh = load_xpm_image(&game->display, XPM_WIP);
+        else if (game->gamescene == WIN)
+            game->refresh = load_xpm_image(&game->display, XPM_WIN);
         else {
             game->refresh = create_image(&game->display, SCENE_W, SCENE_H);
             draw_scene(game->refresh);

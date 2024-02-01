@@ -55,11 +55,12 @@
 #define XPM_MAIN_SCENE         "./assets/images/main_scene.xpm"
 #define XPM_FOOTER             "./assets/images/footer.xpm"
 #define XPM_WIP                "./assets/images/wip.xpm"
+#define XPM_WIN                "./assets/images/win.xpm"
 #define XPM_PLAYERSTATS        "./assets/images/playerstats.xpm"
 
 typedef enum e_component { SCREEN, HEADER, SCENE, FOOTER } t_component;
 
-typedef enum e_gamescene { MAIN, INSTRUCTIONS, GAME } t_gamescene;
+typedef enum e_gamescene { MAIN, INSTRUCTIONS, GAME, WIN, LOSE } t_gamescene;
 
 typedef enum e_movement { UP, DOWN, LEFT, RIGHT } t_movement;
 
@@ -73,8 +74,9 @@ typedef struct s_map {
     char **grid;
     size_t width;
     size_t height;
-    int player_startpos[2];
     t_player *player;
+    int start_pos[2];
+    int end_pos[2];
 } t_map;
 
 typedef struct s_game {
