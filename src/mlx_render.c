@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 12:21:53 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 13:28:10 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,26 @@ draw_background(t_image *img, t_rgba color, int random, int progressive) {
     }
 }
 
-// static void
-// draw_stats() {
-//     int j;
-//     int size[2];
+static void
+draw_stats() {
+    int j;
+    int size[2];
 
-//     j = 0;
-//     size[0] = STATS_BAR_LENGTH / PLAYER_MAX_HP_POINTS;
-//     size[1] = STATS_BAR_HEIGHT;
-//     while (j <= PLAYER_MAX_HP_POINTS) {
-//         if (game->player->health >= j)
-//             draw_rectangle(game->refresh,
-//                            (t_point){STATS_OFFSET_X + j * size[0],
-//                            HP_OFFSET_Y}, HP_FULL_COLOR, size);
-//         else
-//             draw_rectangle(game->refresh,
-//                            (t_point){STATS_OFFSET_X + j * size[0],
-//                            HP_OFFSET_Y}, HP_EMPTY_COLOR, size);
-//         j++;
-//     }
-// }
+    j = 0;
+    size[0] = STATS_BAR_LENGTH / PLAYER_MAX_HP_POINTS;
+    size[1] = STATS_BAR_HEIGHT;
+    while (j <= PLAYER_MAX_HP_POINTS) {
+        if (game->map->player->health >= j)
+            draw_rectangle(game->refresh,
+                           (t_point){HP_OFFSET_X + j * size[0], HP_OFFSET_Y},
+                           HP_FULL_COLOR, size);
+        else
+            draw_rectangle(game->refresh,
+                           (t_point){HP_OFFSET_X + j * size[0], HP_OFFSET_Y},
+                           HP_EMPTY_COLOR, size);
+        j++;
+    }
+}
 
 static void
 draw_scene(t_image *img) {
@@ -64,16 +64,16 @@ draw_scene(t_image *img) {
         while (j < COLS) {
             if (game->map->grid[i][j] == '1')
                 draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
-                            0x000000, CELL_SIZE);
+                            WALL_CELL_COLOR, CELL_SIZE);
             else if (game->map->grid[i][j] == 'P')
                 draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
-                            0x00FF00, CELL_SIZE);
+                            START_POSITION_COLOR, CELL_SIZE);
             else if (game->map->grid[i][j] == 'E')
                 draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
-                            0xFF0000, CELL_SIZE);
+                            END_POSITION_COLOR, CELL_SIZE);
             else if (game->map->grid[i][j] == '0')
                 draw_square(img, (t_point){j * CELL_SIZE, i * CELL_SIZE},
-                            0xFFFFFF, CELL_SIZE);
+                            FREE_CELL_COLOR, CELL_SIZE);
             j++;
         }
         i++;
@@ -101,8 +101,12 @@ setup_refresh(t_component comp, t_image ***ptr) {
         if (game->gamescene != GAME) {
             game->refresh = load_xpm_image(&game->display, XPM_HEADER);
         } else {
-            game->refresh = load_xpm_image(&game->display, XPM_PLAYERSTATS);
-            // draw_stats(game);
+            if (game->map->player->have_trap)
+                game->refresh = load_xpm_image(&game->display, XPM_STATS_TRAP);
+            else
+                game->refresh =
+                    load_xpm_image(&game->display, XPM_STATS_NOTRAP);
+            draw_stats(game);
         }
         break;
     case SCENE:
@@ -113,6 +117,8 @@ setup_refresh(t_component comp, t_image ***ptr) {
             game->refresh = load_xpm_image(&game->display, XPM_INSTRUCTIONS);
         else if (game->gamescene == WIN)
             game->refresh = load_xpm_image(&game->display, XPM_WIN);
+        else if (game->gamescene == LOSE)
+            game->refresh = load_xpm_image(&game->display, XPM_LOSE);
         else {
             game->refresh = create_image(&game->display, SCENE_W, SCENE_H);
             draw_scene(game->refresh);

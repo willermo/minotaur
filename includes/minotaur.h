@@ -45,14 +45,18 @@
 #define PLAYER_START_HP_POINTS         100
 #define HP_FULL_COLOR                  0Xd60000
 #define HP_EMPTY_COLOR                 0x5c0000
-#define HP_OFFSET_X                    310
-#define HP_OFFSET_Y                    55
+#define HP_OFFSET_X                    295
+#define HP_OFFSET_Y                    39
 #define COLLECTIBLES                   50
 #define TRAPS                          10
-#define STATS_BAR_LENGTH               200
-#define STATS_BAR_HEIGHT               25
+#define STATS_BAR_LENGTH               400
+#define STATS_BAR_HEIGHT               50
 #define STANDARD_FOOTER_BACKGROUND     0xFAFAFA
 #define INSTRUCTIONS_FOOTER_BACKGROUND 0xB84B19
+#define FREE_CELL_COLOR                0xb9ccb1
+#define WALL_CELL_COLOR                0x3b3b3b
+#define START_POSITION_COLOR           0x00FF00
+#define END_POSITION_COLOR             0xFF0000
 #define XPM_HEADER                     "./assets/images/header.xpm"
 #define XPM_MAIN_SCENE                 "./assets/images/main_scene.xpm"
 #define XPM_INSTRUCTIONS               "./assets/images/instructions.xpm"
@@ -61,8 +65,14 @@
 #define XPM_FOOTER_LOSE                "./assets/images/footer_lose.xpm"
 #define XPM_WIN                        "./assets/images/win.xpm"
 #define XPM_LOSE                       "./assets/images/lose.xpm"
-#define XPM_PLAYERSTATS                "./assets/images/playerstats.xpm"
+#define XPM_STATS_TRAP                 "./assets/images/stats_trap.xpm"
+#define XPM_STATS_NOTRAP               "./assets/images/stats_notrap.xpm"
 #define XPM_WIP                        "./assets/images/wip.xpm"
+#define XPM_TRAP_COLLECTIBLE           "./assets/sprites/trap_collectible.xpm"
+#define XPM_TRAP_ACTIVE                "./assets/sprites/trap_active.xpm"
+#define XPM_FOOD                       "./assets/sprites/food.xpm"
+#define XMP_EXPLORER                   "./assets/sprites/explorer.xpm"
+#define XPM_MINOTAUR                   "./assets/sprites/minotaur.xpm"
 
 typedef enum e_component { SCREEN, HEADER, SCENE, FOOTER } t_component;
 
@@ -74,6 +84,7 @@ typedef struct s_player {
     int x;
     int y;
     int health;
+    int have_trap;
 } t_player;
 
 typedef struct s_map {
@@ -83,6 +94,8 @@ typedef struct s_map {
     t_player *player;
     int start_pos[2];
     int end_pos[2];
+    t_cl_list *collectibles;
+    t_cl_list *traps;
 } t_map;
 
 typedef struct s_game {

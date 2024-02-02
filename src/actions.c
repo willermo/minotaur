@@ -38,8 +38,10 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
     if (game->footer_text)
         free(game->footer_text);
     game->footer_text = strdup(str);
-    refresh(SCENE, (t_point){0, 200});
-    refresh(FOOTER, (t_point){0, 1200});
+    game->map->player->health--;
+    if (game->map->player->health <= 0)
+        game->gamescene = LOSE;
+    render_gamescreen();
 }
 
 void

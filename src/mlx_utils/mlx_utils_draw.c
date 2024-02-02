@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:26:05 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/01 21:29:53 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 13:23:07 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,5 @@ draw_rectangle(t_image *image, t_point coord, int color, int size[2]) {
             j++;
         }
         i++;
-        printf("i: %d, j: %d\n", i, j);
     }
 }

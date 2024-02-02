@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:26:21 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 10:04:39 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 13:13:21 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ init_player(void) {
     game->map->player->x = 1;
     game->map->player->y = ROWS - 1;
     game->map->player->health = PLAYER_START_HP_POINTS;
+    game->map->player->have_trap = 1;
 }
 
 static void
