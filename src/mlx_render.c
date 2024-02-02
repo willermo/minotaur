@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 10:31:47 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 12:06:39 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ draw_scene(t_image *img) {
 
 static void
 draw_footer(t_image *img) {
-    draw_background(img, 0xFAFAFA, 0, 0);
+    if (game->gamescene == INSTRUCTIONS)
+        draw_background(img, 0xB84B19, 0, 0);
+    else
+        draw_background(img, 0xFAFAFA, 0, 0);
 }
 
 static void
@@ -107,7 +110,7 @@ setup_refresh(t_component comp, t_image ***ptr) {
         if (game->gamescene == MAIN)
             game->refresh = load_xpm_image(&game->display, XPM_MAIN_SCENE);
         else if (game->gamescene == INSTRUCTIONS)
-            game->refresh = load_xpm_image(&game->display, XPM_WIP);
+            game->refresh = load_xpm_image(&game->display, XPM_INSTRUCTIONS);
         else if (game->gamescene == WIN)
             game->refresh = load_xpm_image(&game->display, XPM_WIN);
         else {
@@ -119,6 +122,10 @@ setup_refresh(t_component comp, t_image ***ptr) {
         *ptr = &game->footer;
         if (game->gamescene == MAIN) {
             game->refresh = load_xpm_image(&game->display, XPM_FOOTER);
+        } else if (game->gamescene == WIN) {
+            game->refresh = load_xpm_image(&game->display, XPM_FOOTER_WIN);
+        } else if (game->gamescene == LOSE) {
+            game->refresh = load_xpm_image(&game->display, XPM_FOOTER_LOSE);
         } else {
             game->refresh = create_image(&game->display, FOOTER_W, FOOTER_H);
             draw_footer(game->refresh);

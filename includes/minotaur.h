@@ -54,10 +54,14 @@
 #define STATS_BAR_HEIGHT       25
 #define XPM_HEADER             "./assets/images/header.xpm"
 #define XPM_MAIN_SCENE         "./assets/images/main_scene.xpm"
+#define XPM_INSTRUCTIONS       "./assets/images/instructions.xpm"
 #define XPM_FOOTER             "./assets/images/footer.xpm"
-#define XPM_WIP                "./assets/images/wip.xpm"
+#define XPM_FOOTER_WIN         "./assets/images/footer_win.xpm"
+#define XPM_FOOTER_LOSE        "./assets/images/footer_lose.xpm"
 #define XPM_WIN                "./assets/images/win.xpm"
+#define XPM_LOSE               "./assets/images/lose.xpm"
 #define XPM_PLAYERSTATS        "./assets/images/playerstats.xpm"
+#define XPM_WIP                "./assets/images/wip.xpm"
 
 typedef enum e_component { SCREEN, HEADER, SCENE, FOOTER } t_component;
 
