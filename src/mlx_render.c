@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 13:28:10 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 15:40:54 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,40 @@ draw_footer(t_image *img) {
 }
 
 static void
+destroy_collectibles() {
+    t_cl_list *node;
+    t_image *collectible_image;
+
+    node = game->collectibles_images->next;
+    while (node->data) {
+        collectible_image = (t_image *) node->data;
+        destroy_image(&game->display, collectible_image);
+        free(collectible_image);
+        node = node->next;
+    }
+    cl_delete_list(game->collectibles_images);
+}
+
+static void
+draw_collectibles() {
+    t_cl_list *node;
+    t_point *cell;
+    t_image *collectible_image;
+
+    destroy_collectibles();
+    node = game->map->collectibles->next;
+    while (node->data) {
+        cell = (t_point *) node->data;
+        collectible_image = load_xpm_image(&game->display, XPM_FOOD);
+        add_image(&game->display, collectible_image,
+                  (t_point){cell->x * CELL_SIZE + 2,
+                            cell->y * CELL_SIZE + HEADER_H + 2});
+        cl_insert_end(game->collectibles_images, collectible_image);
+        node = node->next;
+    }
+}
+
+static void
 setup_refresh(t_component comp, t_image ***ptr) {
     switch (comp) {
     case SCREEN:
@@ -160,4 +194,6 @@ render_gamescreen(void) {
     refresh(HEADER, (t_point){0, 0});
     refresh(SCENE, (t_point){0, 200});
     refresh(FOOTER, (t_point){0, 1200});
+    if (game->gamescene == GAME)
+        draw_collectibles();
 }

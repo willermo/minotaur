@@ -43,6 +43,8 @@
 #define CELL_SIZE                      SCENE_W / COLS
 #define PLAYER_MAX_HP_POINTS           100
 #define PLAYER_START_HP_POINTS         100
+#define MOVEMENT_COST                  1
+#define FOOD_RESTORE                   20
 #define HP_FULL_COLOR                  0Xd60000
 #define HP_EMPTY_COLOR                 0x5c0000
 #define HP_OFFSET_X                    295
@@ -96,6 +98,8 @@ typedef struct s_map {
     int end_pos[2];
     t_cl_list *collectibles;
     t_cl_list *traps;
+    t_cl_list *active_traps;
+    t_cl_list *free_cells;
 } t_map;
 
 typedef struct s_game {
@@ -105,6 +109,9 @@ typedef struct s_game {
     t_image *scene;
     t_image *footer;
     t_image *refresh;
+    t_cl_list *collectibles_images;
+    t_cl_list *traps_images;
+    t_cl_list *active_traps_images;
     t_map *map;
     t_player *player;
     t_gamescene gamescene;

@@ -17,6 +17,12 @@ is_exit_cell(int col, int row) {
     return (col == game->map->end_pos[0] && row == game->map->end_pos[1]);
 }
 
+static int
+player_has_food(int col, int row) {
+    // TODO
+    return 0;
+}
+
 static void
 update_position(int old_col, int old_row, int new_col, int new_row) {
     char str[100];
@@ -38,7 +44,10 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
     if (game->footer_text)
         free(game->footer_text);
     game->footer_text = strdup(str);
-    game->map->player->health--;
+    game->map->player->health -= MOVEMENT_COST;
+    if (player_has_food(new_col, new_row))
+        game->map->player->health = ft_min(
+            game->map->player->health + FOOD_RESTORE, PLAYER_MAX_HP_POINTS);
     if (game->map->player->health <= 0)
         game->gamescene = LOSE;
     render_gamescreen();

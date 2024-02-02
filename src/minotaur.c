@@ -6,13 +6,53 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:26:21 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 13:13:21 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 15:33:43 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
 
 t_game *game;
+
+static void
+update_free_cells() {
+    t_point *cell;
+
+    cl_delete_list(game->map->free_cells);
+    for (int i = 0; i < ROWS; i++)
+        for (int j = 0; j < COLS; j++)
+            if (game->map->grid[i][j] == '0') {
+                cell = (t_point *) malloc(sizeof(t_point));
+                cell->x = j;
+                cell->y = i;
+                cl_insert_end(game->map->free_cells, cell);
+            }
+}
+
+static void
+setup_collectibles() {
+    int free_cells_count;
+
+    update_free_cells();
+    free_cells_count = cl_size(game->map->free_cells);
+    for (int i = 0; i < COLLECTIBLES; i++)
+        cl_add_node_end(
+            game->map->collectibles,
+            cl_remove_node_by_position(game->map->free_cells,
+                                       rand() % free_cells_count--));
+}
+
+static void
+setup_traps() {
+    int free_cells_count;
+
+    update_free_cells();
+    free_cells_count = cl_size(game->map->free_cells);
+    for (int i = 0; i < TRAPS; i++)
+        cl_add_node_end(game->map->traps, cl_remove_node_by_position(
+                                              game->map->free_cells,
+                                              rand() % free_cells_count--));
+}
 
 static void
 setup_maze() {
@@ -60,6 +100,10 @@ init_map(void) {
     game->map->start_pos[1] = ROWS - 1;
     game->map->end_pos[0] = COLS - 2;
     game->map->end_pos[1] = 0;
+    game->map->collectibles = cl_init_list();
+    game->map->traps = cl_init_list();
+    game->map->active_traps = cl_init_list();
+    game->map->free_cells = cl_init_list();
 }
 
 static void
@@ -71,6 +115,9 @@ init_game(void) {
     init_map();
     init_player();
     game->footer_text = NULL;
+    game->collectibles_images = cl_init_list();
+    game->traps_images = cl_init_list();
+    game->active_traps_images = cl_init_list();
 }
 
 static void
@@ -80,6 +127,10 @@ clean_game(void) {
         free(game->map->grid[i]);
     free(game->map->grid);
     free(game->map->player);
+    cl_destroy_list(&game->map->collectibles);
+    cl_destroy_list(&game->map->traps);
+    cl_destroy_list(&game->map->active_traps);
+    cl_destroy_list(&game->map->free_cells);
     free(game->map);
     free(game);
 }
@@ -87,6 +138,8 @@ clean_game(void) {
 static void
 start_game(void) {
     setup_maze();
+    setup_collectibles();
+    setup_traps();
     init_graphics();
     render_gamescreen();
     init_hooks();
