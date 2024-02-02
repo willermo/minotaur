@@ -130,6 +130,7 @@ extern t_game *game;
 
 // UTILS SECTION
 // defined in minotaur_helpers.c
+char **clone_grid(char **grid);
 int compare_cells(void *cell1, void *cell2);
 int is_starting_cell(int col, int row);
 int is_exit_cell(int col, int row);
@@ -158,6 +159,9 @@ void init_graphics(void);
 void init_hooks(void);
 void destroy_mlx(void);
 // defined in mlx_render.c
+void destroy_collectibles();
+void destroy_traps();
+void destroy_active_traps();
 void refresh(t_component component, t_point coords);
 void render_gamescreen(void);
 

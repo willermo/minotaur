@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 23:32:37 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/03 00:21:25 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ draw_footer(t_image *img) {
         draw_background(img, STANDARD_FOOTER_BACKGROUND, 0, 0);
 }
 
-static void
+void
 destroy_collectibles() {
     t_cl_list *node;
     t_image *collectible_image;
@@ -121,7 +121,7 @@ draw_collectibles() {
     }
 }
 
-static void
+void
 destroy_traps() {
     t_cl_list *node;
     t_image *trap_image;
@@ -154,7 +154,7 @@ draw_traps() {
     }
 }
 
-static void
+void
 destroy_active_traps() {
     t_cl_list *node;
     t_image *trap_image;

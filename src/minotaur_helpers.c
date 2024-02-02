@@ -6,11 +6,24 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 21:03:29 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 21:43:17 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/03 00:07:10 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
+
+char **
+clone_grid(char **grid) {
+    char **clone;
+
+    clone = (char **) malloc(ROWS * sizeof(char *));
+    for (int i = 0; i < ROWS; i++) {
+        clone[i] = (char *) malloc(COLS * sizeof(char));
+        for (int j = 0; j < COLS; j++)
+            clone[i][j] = grid[i][j];
+    }
+    return (clone);
+}
 
 int
 compare_cells(void *cell1, void *cell2) {

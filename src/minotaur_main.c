@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minotaur.c                                         :+:      :+:    :+:   */
+/*   minotaur_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:26:21 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 23:22:09 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/03 00:24:38 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,23 @@ clean_game(void) {
     cl_destroy_list(&game->map->traps);
     cl_destroy_list(&game->map->active_traps);
     cl_destroy_list(&game->map->free_cells);
+    free(game->footer_text);
     free(game->map);
-    if (game->player_image)
+    if (game->player_image) {
+        destroy_image(&game->display, game->player_image);
         free(game->player_image);
-    if (game->minotaur_image)
+    }
+    if (game->minotaur_image) {
+        destroy_image(&game->display, game->minotaur_image);
         free(game->minotaur_image);
+    }
+    destroy_collectibles();
+    cl_destroy_list(&game->collectibles_images);
+    destroy_traps();
+    cl_destroy_list(&game->traps_images);
+    destroy_active_traps();
+    cl_destroy_list(&game->active_traps_images);
+    destroy_mlx();
     free(game);
 }
 
