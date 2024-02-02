@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:26:21 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 15:33:43 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 21:44:09 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ update_free_cells() {
     cl_delete_list(game->map->free_cells);
     for (int i = 0; i < ROWS; i++)
         for (int j = 0; j < COLS; j++)
-            if (game->map->grid[i][j] == '0') {
+            if (game->map->grid[i][j] == '0' && !is_starting_cell(j, i) &&
+                !is_exit_cell(j, i) && is_food_cell(j, i) == NULL &&
+                is_trap_cell(j, i) == NULL) {
                 cell = (t_point *) malloc(sizeof(t_point));
                 cell->x = j;
                 cell->y = i;

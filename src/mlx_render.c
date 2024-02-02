@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 15:40:54 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 21:39:53 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ destroy_collectibles() {
     while (node->data) {
         collectible_image = (t_image *) node->data;
         destroy_image(&game->display, collectible_image);
-        free(collectible_image);
         node = node->next;
     }
     cl_delete_list(game->collectibles_images);
@@ -118,6 +117,39 @@ draw_collectibles() {
                   (t_point){cell->x * CELL_SIZE + 2,
                             cell->y * CELL_SIZE + HEADER_H + 2});
         cl_insert_end(game->collectibles_images, collectible_image);
+        node = node->next;
+    }
+}
+
+static void
+destroy_traps() {
+    t_cl_list *node;
+    t_image *trap_image;
+
+    node = game->traps_images->next;
+    while (node->data) {
+        trap_image = (t_image *) node->data;
+        destroy_image(&game->display, trap_image);
+        node = node->next;
+    }
+    cl_delete_list(game->traps_images);
+}
+
+static void
+draw_traps() {
+    t_cl_list *node;
+    t_point *cell;
+    t_image *trap_image;
+
+    destroy_traps();
+    node = game->map->traps->next;
+    while (node->data) {
+        cell = (t_point *) node->data;
+        trap_image = load_xpm_image(&game->display, XPM_TRAP_COLLECTIBLE);
+        add_image(&game->display, trap_image,
+                  (t_point){cell->x * CELL_SIZE + 2,
+                            cell->y * CELL_SIZE + HEADER_H + 2});
+        cl_insert_end(game->traps_images, trap_image);
         node = node->next;
     }
 }
@@ -194,6 +226,8 @@ render_gamescreen(void) {
     refresh(HEADER, (t_point){0, 0});
     refresh(SCENE, (t_point){0, 200});
     refresh(FOOTER, (t_point){0, 1200});
-    if (game->gamescene == GAME)
+    if (game->gamescene == GAME) {
         draw_collectibles();
+        draw_traps();
+    }
 }

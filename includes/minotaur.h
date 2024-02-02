@@ -120,11 +120,21 @@ typedef struct s_game {
 
 extern t_game *game;
 
+// UTILS SECTION
+// defined in minotaur_helpers.c
+int compare_cells(void *cell1, void *cell2);
+int is_starting_cell(int col, int row);
+int is_exit_cell(int col, int row);
+t_point *is_food_cell(int col, int row);
+t_point *is_trap_cell(int col, int row);
+t_point *is_trap_active_cell(int col, int row);
+
 // ROUTINE SECTION
-// maze.c
+// defined in maze.c
 void initializeMaze(char **maze);
 void printMaze(char **maze);
 void generateMaze(char **maze, int row, int col);
+
 // MLX SECTION
 // defined in mlx_common.c
 void init_graphics(void);

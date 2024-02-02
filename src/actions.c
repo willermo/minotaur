@@ -13,13 +13,28 @@
 #include "minotaur.h"
 
 static int
-is_exit_cell(int col, int row) {
-    return (col == game->map->end_pos[0] && row == game->map->end_pos[1]);
+player_eats_food(int col, int row) {
+    t_point *cell;
+
+    cell = is_food_cell(col, row);
+    if (cell != NULL) {
+        cl_remove_node_by_data(game->map->collectibles, cell, compare_cells);
+        free(cell);
+        return (1);
+    }
+    return 0;
 }
 
 static int
-player_has_food(int col, int row) {
-    // TODO
+player_gets_trap(int col, int row) {
+    t_point *cell;
+
+    cell = is_trap_cell(col, row);
+    if (cell != NULL) {
+        cl_remove_node_by_data(game->map->traps, cell, compare_cells);
+        free(cell);
+        return (1);
+    }
     return 0;
 }
 
@@ -45,7 +60,9 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
         free(game->footer_text);
     game->footer_text = strdup(str);
     game->map->player->health -= MOVEMENT_COST;
-    if (player_has_food(new_col, new_row))
+    if (game->map->player->have_trap == 0 && player_gets_trap(new_col, new_row))
+        game->map->player->have_trap = 1;
+    if (player_eats_food(new_col, new_row))
         game->map->player->health = ft_min(
             game->map->player->health + FOOD_RESTORE, PLAYER_MAX_HP_POINTS);
     if (game->map->player->health <= 0)
