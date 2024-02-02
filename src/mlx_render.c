@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 21:39:53 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 23:24:36 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,36 @@ draw_traps() {
 }
 
 static void
+draw_player() {
+    t_image *img;
+
+    img = load_xpm_image(&game->display, XMP_EXPLORER);
+    add_image(&game->display, img,
+              (t_point){game->map->player->x * CELL_SIZE + 2,
+                        game->map->player->y * CELL_SIZE + HEADER_H + 2});
+    if (game->player_image) {
+        destroy_image(&game->display, game->player_image);
+        free(game->player_image);
+    }
+    game->player_image = img;
+}
+
+static void
+draw_minotaur() {
+    t_image *img;
+
+    img = load_xpm_image(&game->display, XPM_MINOTAUR);
+    add_image(&game->display, img,
+              (t_point){game->map->minotaur->x * CELL_SIZE + 2,
+                        game->map->minotaur->y * CELL_SIZE + HEADER_H + 2});
+    if (game->minotaur_image) {
+        destroy_image(&game->display, game->minotaur_image);
+        free(game->minotaur_image);
+    }
+    game->minotaur_image = img;
+}
+
+static void
 setup_refresh(t_component comp, t_image ***ptr) {
     switch (comp) {
     case SCREEN:
@@ -167,7 +197,7 @@ setup_refresh(t_component comp, t_image ***ptr) {
         if (game->gamescene != GAME) {
             game->refresh = load_xpm_image(&game->display, XPM_HEADER);
         } else {
-            if (game->map->player->have_trap)
+            if (game->map->player->has_trap)
                 game->refresh = load_xpm_image(&game->display, XPM_STATS_TRAP);
             else
                 game->refresh =
@@ -229,5 +259,7 @@ render_gamescreen(void) {
     if (game->gamescene == GAME) {
         draw_collectibles();
         draw_traps();
+        draw_player();
+        draw_minotaur();
     }
 }

@@ -38,6 +38,12 @@ player_gets_trap(int col, int row) {
     return 0;
 }
 
+void
+set_trap() {
+    printf("Setting trap\n");
+    // refresh(slp, SCENE, (t_point){0, C3D_HEIGHT / 4});
+}
+
 static void
 update_position(int old_col, int old_row, int new_col, int new_row) {
     char str[100];
@@ -46,8 +52,6 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
         render_gamescreen();
         return;
     }
-    game->map->grid[old_row][old_col] = '0';
-    game->map->grid[new_row][new_col] = 'P';
     game->map->player->x = new_col;
     game->map->player->y = new_row;
     if (game->footer_text) {
@@ -60,8 +64,8 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
         free(game->footer_text);
     game->footer_text = strdup(str);
     game->map->player->health -= MOVEMENT_COST;
-    if (game->map->player->have_trap == 0 && player_gets_trap(new_col, new_row))
-        game->map->player->have_trap = 1;
+    if (game->map->player->has_trap == 0 && player_gets_trap(new_col, new_row))
+        game->map->player->has_trap = 1;
     if (player_eats_food(new_col, new_row))
         game->map->player->health = ft_min(
             game->map->player->health + FOOD_RESTORE, PLAYER_MAX_HP_POINTS);
@@ -78,25 +82,20 @@ move(t_movement direction) {
 
     switch (direction) {
     case UP:
-        if (row > 0 && strchr("0E", grid[row - 1][col]))
+        if (row > 0 && strchr("0EP", grid[row - 1][col]))
             update_position(col, row, col, row - 1);
         break;
     case DOWN:
-        if (row < ROWS - 1 && strchr("0E", grid[row + 1][col]))
+        if (row < ROWS - 1 && strchr("0EP", grid[row + 1][col]))
             update_position(col, row, col, row + 1);
         break;
     case LEFT:
-        if (col > 0 && strchr("0E", grid[row][col - 1]))
+        if (col > 0 && strchr("0EP", grid[row][col - 1]))
             update_position(col, row, col - 1, row);
         break;
     case RIGHT:
-        if (col < COLS - 1 && strchr("0E", grid[row][col + 1]))
+        if (col < COLS - 1 && strchr("0EP", grid[row][col + 1]))
             update_position(col, row, col + 1, row);
         break;
     }
-}
-
-void
-set_trap() {
-    // refresh(slp, SCENE, (t_point){0, C3D_HEIGHT / 4});
 }

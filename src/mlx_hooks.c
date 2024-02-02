@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:48:11 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/01 18:51:50 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 21:49:05 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ keypress_other(int ks) {
         move(DOWN);
     if (ks == 0x64 || ks == 0x44)
         move(RIGHT);
-    if (ks == 0x20)
+    if (ks == 0xFF0D)
         set_trap();
     return (0);
 }

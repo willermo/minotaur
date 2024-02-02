@@ -86,14 +86,21 @@ typedef struct s_player {
     int x;
     int y;
     int health;
-    int have_trap;
+    int has_trap;
 } t_player;
+
+typedef struct s_minotaur {
+    int x;
+    int y;
+    int is_trapped;
+} t_minotaur;
 
 typedef struct s_map {
     char **grid;
     size_t width;
     size_t height;
     t_player *player;
+    t_minotaur *minotaur;
     int start_pos[2];
     int end_pos[2];
     t_cl_list *collectibles;
@@ -109,11 +116,12 @@ typedef struct s_game {
     t_image *scene;
     t_image *footer;
     t_image *refresh;
+    t_image *player_image;
+    t_image *minotaur_image;
     t_cl_list *collectibles_images;
     t_cl_list *traps_images;
     t_cl_list *active_traps_images;
     t_map *map;
-    t_player *player;
     t_gamescene gamescene;
     char *footer_text;
 } t_game;
@@ -142,9 +150,9 @@ void init_graphics(void);
 int keypress(int ks);
 int x_click(void);
 int mouse_hook(int x, int y);
-// defined in minotaur_actions_move.c
-void move(t_movement direction);
+// defined in minotaur_actions.c
 void set_trap(void);
+void move(t_movement direction);
 // defined in mlx_common.c
 void init_graphics(void);
 void init_hooks(void);
