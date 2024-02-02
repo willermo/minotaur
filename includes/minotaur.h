@@ -24,6 +24,7 @@
 #include <fcntl.h>
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -89,6 +90,7 @@ typedef struct s_game {
     t_map *map;
     t_player *player;
     t_gamescene gamescene;
+    char *footer_text;
 } t_game;
 
 extern t_game *game;

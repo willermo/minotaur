@@ -12,15 +12,34 @@
 
 #include "minotaur.h"
 
+static int
+is_exit_cell(int col, int row) {
+    return (col == game->map->end_pos[0] && row == game->map->end_pos[1]);
+}
+
 static void
 update_position(int old_col, int old_row, int new_col, int new_row) {
+    char str[100];
+    if (is_exit_cell(new_col, new_row)) {
+        game->gamescene = WIN;
+        render_gamescreen();
+        return;
+    }
     game->map->grid[old_row][old_col] = '0';
     game->map->grid[new_row][new_col] = 'P';
     game->map->player->x = new_col;
     game->map->player->y = new_row;
-    printf("Player moved from (%d, %d) to (%d, %d)\n", old_col, old_row,
-           new_col, new_row);
+    if (game->footer_text) {
+        free(game->footer_text);
+        game->footer_text = NULL;
+    }
+    sprintf(str, "Player moved from (%d, %d) to (%d, %d)", old_col, old_row,
+            new_col, new_row);
+    if (game->footer_text)
+        free(game->footer_text);
+    game->footer_text = strdup(str);
     refresh(SCENE, (t_point){0, 200});
+    refresh(FOOTER, (t_point){0, 1200});
 }
 
 void

@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:26:21 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 00:02:45 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 10:04:39 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ init_game(void) {
     game->map->player = (t_player *) malloc(sizeof(t_player));
     init_map();
     init_player();
+    game->footer_text = NULL;
 }
 
 static void
