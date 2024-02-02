@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 12:06:39 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 12:21:53 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ draw_scene(t_image *img) {
 static void
 draw_footer(t_image *img) {
     if (game->gamescene == INSTRUCTIONS)
-        draw_background(img, 0xB84B19, 0, 0);
+        draw_background(img, INSTRUCTIONS_FOOTER_BACKGROUND, 0, 0);
     else
-        draw_background(img, 0xFAFAFA, 0, 0);
+        draw_background(img, STANDARD_FOOTER_BACKGROUND, 0, 0);
 }
 
 static void

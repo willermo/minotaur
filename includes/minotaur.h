@@ -28,40 +28,41 @@
 #include <time.h>
 #include <unistd.h>
 
-#define VERBOSE                1
-#define SCREEN_TITLE           "Minotaur's Labyrinth"
-#define SCREEN_W               720
-#define SCREEN_H               1280
-#define HEADER_W               720
-#define HEADER_H               200
-#define SCENE_W                720
-#define SCENE_H                1000
-#define FOOTER_W               720
-#define FOOTER_H               80
-#define ROWS                   50
-#define COLS                   36
-#define CELL_SIZE              SCENE_W / COLS
-#define PLAYER_MAX_HP_POINTS   100
-#define PLAYER_START_HP_POINTS 100
-#define HP_FULL_COLOR          0Xd60000
-#define HP_EMPTY_COLOR         0x5c0000
-#define MANA_FULL_COLOR        0x011bfa
-#define MANA_EMPTY_COLOR       0x00095c
-#define STATS_OFFSET_X         310
-#define HP_OFFSET_Y            55
-#define MANA_OFFSET_Y          120
-#define STATS_BAR_LENGTH       200
-#define STATS_BAR_HEIGHT       25
-#define XPM_HEADER             "./assets/images/header.xpm"
-#define XPM_MAIN_SCENE         "./assets/images/main_scene.xpm"
-#define XPM_INSTRUCTIONS       "./assets/images/instructions.xpm"
-#define XPM_FOOTER             "./assets/images/footer.xpm"
-#define XPM_FOOTER_WIN         "./assets/images/footer_win.xpm"
-#define XPM_FOOTER_LOSE        "./assets/images/footer_lose.xpm"
-#define XPM_WIN                "./assets/images/win.xpm"
-#define XPM_LOSE               "./assets/images/lose.xpm"
-#define XPM_PLAYERSTATS        "./assets/images/playerstats.xpm"
-#define XPM_WIP                "./assets/images/wip.xpm"
+#define VERBOSE                        1
+#define SCREEN_TITLE                   "Minotaur's Labyrinth"
+#define SCREEN_W                       720
+#define SCREEN_H                       1280
+#define HEADER_W                       720
+#define HEADER_H                       200
+#define SCENE_W                        720
+#define SCENE_H                        1000
+#define FOOTER_W                       720
+#define FOOTER_H                       80
+#define ROWS                           50
+#define COLS                           36
+#define CELL_SIZE                      SCENE_W / COLS
+#define PLAYER_MAX_HP_POINTS           100
+#define PLAYER_START_HP_POINTS         100
+#define HP_FULL_COLOR                  0Xd60000
+#define HP_EMPTY_COLOR                 0x5c0000
+#define HP_OFFSET_X                    310
+#define HP_OFFSET_Y                    55
+#define COLLECTIBLES                   50
+#define TRAPS                          10
+#define STATS_BAR_LENGTH               200
+#define STATS_BAR_HEIGHT               25
+#define STANDARD_FOOTER_BACKGROUND     0xFAFAFA
+#define INSTRUCTIONS_FOOTER_BACKGROUND 0xB84B19
+#define XPM_HEADER                     "./assets/images/header.xpm"
+#define XPM_MAIN_SCENE                 "./assets/images/main_scene.xpm"
+#define XPM_INSTRUCTIONS               "./assets/images/instructions.xpm"
+#define XPM_FOOTER                     "./assets/images/footer.xpm"
+#define XPM_FOOTER_WIN                 "./assets/images/footer_win.xpm"
+#define XPM_FOOTER_LOSE                "./assets/images/footer_lose.xpm"
+#define XPM_WIN                        "./assets/images/win.xpm"
+#define XPM_LOSE                       "./assets/images/lose.xpm"
+#define XPM_PLAYERSTATS                "./assets/images/playerstats.xpm"
+#define XPM_WIP                        "./assets/images/wip.xpm"
 
 typedef enum e_component { SCREEN, HEADER, SCENE, FOOTER } t_component;
 
