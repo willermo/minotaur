@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 23:24:36 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/02 23:32:37 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,39 @@ draw_traps() {
 }
 
 static void
+destroy_active_traps() {
+    t_cl_list *node;
+    t_image *trap_image;
+
+    node = game->active_traps_images->next;
+    while (node->data) {
+        trap_image = (t_image *) node->data;
+        destroy_image(&game->display, trap_image);
+        node = node->next;
+    }
+    cl_delete_list(game->active_traps_images);
+}
+
+static void
+draw_active_traps() {
+    t_cl_list *node;
+    t_point *cell;
+    t_image *trap_image;
+
+    destroy_active_traps();
+    node = game->map->active_traps->next;
+    while (node->data) {
+        cell = (t_point *) node->data;
+        trap_image = load_xpm_image(&game->display, XPM_TRAP_ACTIVE);
+        add_image(&game->display, trap_image,
+                  (t_point){cell->x * CELL_SIZE + 2,
+                            cell->y * CELL_SIZE + HEADER_H + 2});
+        cl_insert_end(game->active_traps_images, trap_image);
+        node = node->next;
+    }
+}
+
+static void
 draw_player() {
     t_image *img;
 
@@ -259,6 +292,7 @@ render_gamescreen(void) {
     if (game->gamescene == GAME) {
         draw_collectibles();
         draw_traps();
+        draw_active_traps();
         draw_player();
         draw_minotaur();
     }

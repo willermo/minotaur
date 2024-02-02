@@ -29,7 +29,7 @@
 #include <unistd.h>
 
 #define VERBOSE                        1
-#define SCREEN_TITLE                   "Minotaur's Labyrinth"
+#define SCREEN_TITLE                   "Minotaur's Lair"
 #define SCREEN_W                       720
 #define SCREEN_H                       1280
 #define HEADER_W                       720

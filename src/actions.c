@@ -40,8 +40,21 @@ player_gets_trap(int col, int row) {
 
 void
 set_trap() {
-    printf("Setting trap\n");
-    // refresh(slp, SCENE, (t_point){0, C3D_HEIGHT / 4});
+    char str[100];
+    t_point *cell;
+
+    cell = (t_point *) malloc(sizeof(t_point));
+    cell->x = game->map->player->x;
+    cell->y = game->map->player->y;
+
+    cl_insert_end(game->map->active_traps, (void *) cell);
+    game->map->player->has_trap = 0;
+    sprintf(str, "Trap set at (%d, %d)", game->map->player->x,
+            game->map->player->y);
+    if (game->footer_text)
+        free(game->footer_text);
+    game->footer_text = strdup(str);
+    render_gamescreen();
 }
 
 static void
@@ -69,6 +82,8 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
     if (player_eats_food(new_col, new_row))
         game->map->player->health = ft_min(
             game->map->player->health + FOOD_RESTORE, PLAYER_MAX_HP_POINTS);
+    if (!game->map->player->has_trap && player_gets_trap(new_col, new_row))
+        game->map->player->has_trap = 1;
     if (game->map->player->health <= 0)
         game->gamescene = LOSE;
     render_gamescreen();
