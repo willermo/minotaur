@@ -1,37 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   maze.c                                             :+:      :+:    :+:   */
+/*   minotaur_maze_algorithms.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:10:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/01 20:15:47 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/03 20:09:33 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
-
-// Function to initialize the maze with walls
-void
-initializeMaze(char **maze) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            maze[i][j] = '1';   // Initialize all cells as walls
-        }
-    }
-}
-
-// Function to print the maze
-void
-printMaze(char **maze) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            printf("%c ", maze[i][j]);
-        }
-        printf("\n");
-    }
-}
 
 // Recursive backtracking algorithm to generate the maze
 void
@@ -49,27 +28,27 @@ generateMaze(char **maze, int row, int col) {
     int order[4] = {0, 1, 2, 3};
 
     for (int i = 0; i < 4; i++) {
-        int randIndex = rand() % 4;
+        int rand_index = rand() % 4;
         int temp = order[i];
-        order[i] = order[randIndex];
-        order[randIndex] = temp;
+        order[i] = order[rand_index];
+        order[rand_index] = temp;
     }
 
     // Iterate over all directions
     for (int i = 0; i < 4; i++) {
-        int newRow = row + directions[order[i]][0];
-        int newCol = col + directions[order[i]][1];
-        // Check if the new cell is within the bounds of the maze
-        if (newRow > 0 && newRow < ROWS - 1 && newCol > 0 &&
-            newCol < COLS - 1) {
-            // Check if the new cell is a wall
-            if (maze[newRow][newCol] == '1') {
-                // Carve a path in the cell between the current cell and the new
-                // cell
+        int next_row = row + directions[order[i]][0];
+        int next_col = col + directions[order[i]][1];
+        // Check if the next cell is within the bounds of the maze
+        if (next_row > 0 && next_row < ROWS - 1 && next_col > 0 &&
+            next_col < COLS - 1) {
+            // Check if the next cell is a wall
+            if (maze[next_row][next_col] == '1') {
+                // Carve a path in the cell between the current cell and the
+                // next cell
                 maze[row + directions[order[i]][0] / 2]
                     [col + directions[order[i]][1] / 2] = '0';
-                // Recursively call the function on the new cell
-                generateMaze(maze, newRow, newCol);
+                // Recursively call the function on the next cell
+                generateMaze(maze, next_row, next_col);
             }
         }
     }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_render.c                                       :+:      :+:    :+:   */
+/*   minotaur_render.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/03 00:21:25 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/03 22:31:51 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,6 @@ draw_footer(t_image *img) {
         draw_background(img, STANDARD_FOOTER_BACKGROUND, 0, 0);
 }
 
-void
-destroy_collectibles() {
-    t_cl_list *node;
-    t_image *collectible_image;
-
-    node = game->collectibles_images->next;
-    while (node->data) {
-        collectible_image = (t_image *) node->data;
-        destroy_image(&game->display, collectible_image);
-        node = node->next;
-    }
-    cl_delete_list(game->collectibles_images);
-}
-
 static void
 draw_collectibles() {
     t_cl_list *node;
@@ -121,20 +107,6 @@ draw_collectibles() {
     }
 }
 
-void
-destroy_traps() {
-    t_cl_list *node;
-    t_image *trap_image;
-
-    node = game->traps_images->next;
-    while (node->data) {
-        trap_image = (t_image *) node->data;
-        destroy_image(&game->display, trap_image);
-        node = node->next;
-    }
-    cl_delete_list(game->traps_images);
-}
-
 static void
 draw_traps() {
     t_cl_list *node;
@@ -152,20 +124,6 @@ draw_traps() {
         cl_insert_end(game->traps_images, trap_image);
         node = node->next;
     }
-}
-
-void
-destroy_active_traps() {
-    t_cl_list *node;
-    t_image *trap_image;
-
-    node = game->active_traps_images->next;
-    while (node->data) {
-        trap_image = (t_image *) node->data;
-        destroy_image(&game->display, trap_image);
-        node = node->next;
-    }
-    cl_delete_list(game->active_traps_images);
 }
 
 static void
@@ -275,20 +233,22 @@ refresh(t_component component, t_point coords) {
 
     setup_refresh(component, &ptr);
     add_image(&game->display, game->refresh, coords);
-    destroy_image(&game->display, *ptr);
-    free(*ptr);
+    if (*ptr) {
+        destroy_image(&game->display, *ptr);
+        free(*ptr);
+    }
     *ptr = game->refresh;
     game->refresh = NULL;
     if (game->gamescene == GAME && component == FOOTER && game->footer_text)
-        mlx_string_put(game->display.mlx, game->display.win, 30, 1230, 0x000000,
-                       game->footer_text);
+        mlx_string_put(game->display.mlx, game->display.win, FOOTER_TEXT_X,
+                       FOOTER_TEXT_Y, FOOTER_TEXT_COLOR, game->footer_text);
 }
 
 void
 render_gamescreen(void) {
-    refresh(HEADER, (t_point){0, 0});
-    refresh(SCENE, (t_point){0, 200});
-    refresh(FOOTER, (t_point){0, 1200});
+    refresh(HEADER, (t_point){HEADER_OFFSET_W, HEADER_OFFSET_H});
+    refresh(SCENE, (t_point){SCENE_OFFSET_W, SCENE_OFFSET_H});
+    refresh(FOOTER, (t_point){FOOTER_OFFSET_W, FOOTER_OFFSET_H});
     if (game->gamescene == GAME) {
         draw_collectibles();
         draw_traps();
