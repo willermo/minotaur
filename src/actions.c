@@ -55,7 +55,13 @@ set_trap() {
         free(game->footer_text);
     game->footer_text = strdup(str);
     render_gamescreen();
-    game->player->has_played = 1;
+    minotaur_move();
+}
+
+static int
+player_hit_minotaur() {
+    return (game->player->x == game->minotaur->x &&
+            game->player->y == game->minotaur->y);
 }
 
 static void
@@ -64,14 +70,14 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
     if (is_exit_cell(new_col, new_row)) {
         game->gamescene = WIN;
         render_gamescreen();
-        game->is_running = 0;
         return;
     }
     game->player->x = new_col;
     game->player->y = new_row;
-    if (game->footer_text) {
-        free(game->footer_text);
-        game->footer_text = NULL;
+    if (!game->minotaur->is_trapped && player_hit_minotaur()) {
+        game->gamescene = LOSE;
+        render_gamescreen();
+        return;
     }
     sprintf(str, "Player moved from (%d, %d) to (%d, %d)", old_col, old_row,
             new_col, new_row);
@@ -89,7 +95,7 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
     if (game->player->health <= 0)
         game->gamescene = LOSE;
     render_gamescreen();
-    game->player->has_played = 1;
+    minotaur_move();
 }
 
 void

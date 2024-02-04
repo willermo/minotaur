@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:10:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 19:41:59 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 22:57:11 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ visit_neighbours(t_cell *source, t_cl_list *queue) {
 }
 
 // BFS algorithm to find the shortest path from the start to the end of the maze
-static void
-bfs(t_cell *start) {
+void
+explore_maze(t_cell *start) {
     t_cl_list *queue;
     t_cell *cell;
 
@@ -89,18 +89,4 @@ bfs(t_cell *start) {
         cell = (t_cell *) cl_remove_end(queue)->data;
         visit_neighbours(cell, queue);
     }
-}
-
-t_cell *
-find_nearest_cell(t_cell *start, t_cell *end) {
-    t_cell *nearest;
-
-    print_cell(start);
-    print_cell(end);
-    print_neighbours(start);
-    bfs(start);
-    nearest = end;
-    while (nearest->parent != start)
-        nearest = nearest->parent;
-    return (nearest);
 }

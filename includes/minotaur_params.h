@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:33:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 15:48:52 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 23:16:27 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,45 +16,23 @@
 #define VERBOSE                        1
 #define DEBUG                          0
 #define SCREEN_TITLE                   "Minotaur's Lair"
-#define SCREEN_W                       720
-#define SCREEN_H                       1280
-#define HEADER_W                       720
-#define HEADER_H                       200
-#define HEADER_OFFSET_W                0
-#define HEADER_OFFSET_H                0
-#define SCENE_W                        720
-#define SCENE_H                        1000
-#define SCENE_OFFSET_W                 0
-#define SCENE_OFFSET_H                 200
-#define FOOTER_W                       720
-#define FOOTER_H                       80
-#define FOOTER_OFFSET_W                0
-#define FOOTER_OFFSET_H                1200
-#define FOOTER_TEXT_X                  30
-#define FOOTER_TEXT_Y                  1230
-#define FOOTER_TEXT_COLOR              0x000000
-#define FOOTER_TEXT_BACKGROUND         0xFAFAFA
-#define ROWS                           50
-#define COLS                           36
-#define CELL_SIZE                      SCENE_W / COLS
 #define PLAYER_MAX_HP_POINTS           100
 #define PLAYER_START_HP_POINTS         100
 #define MOVEMENT_COST                  1
 #define FOOD_RESTORE                   20
-#define HP_FULL_COLOR                  0Xd60000
-#define HP_EMPTY_COLOR                 0x5c0000
-#define HP_OFFSET_X                    295
-#define HP_OFFSET_Y                    39
 #define COLLECTIBLES                   50
 #define TRAPS                          10
-#define STATS_BAR_LENGTH               400
-#define STATS_BAR_HEIGHT               50
+#define TRAP_PENALTY                   5
+#define FOOTER_TEXT_COLOR              0x000000
+#define FOOTER_TEXT_BACKGROUND         0xFAFAFA
 #define STANDARD_FOOTER_BACKGROUND     0xFAFAFA
 #define INSTRUCTIONS_FOOTER_BACKGROUND 0xB84B19
 #define FREE_CELL_COLOR                0xb9ccb1
 #define WALL_CELL_COLOR                0x3b3b3b
 #define START_POSITION_COLOR           0x00FF00
 #define END_POSITION_COLOR             0xFF0000
+#define HP_FULL_COLOR                  0Xd60000
+#define HP_EMPTY_COLOR                 0x5c0000
 #define XPM_HEADER                     "./assets/images/header.xpm"
 #define XPM_MAIN_SCENE                 "./assets/images/main_scene.xpm"
 #define XPM_INSTRUCTIONS               "./assets/images/instructions.xpm"

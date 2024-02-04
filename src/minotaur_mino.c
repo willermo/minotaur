@@ -6,28 +6,63 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 23:55:57 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 17:15:07 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 23:30:34 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
 
 t_cell *
-get_nearest_to_player_cell() {
-    t_cell *start;
-    t_cell *end;
-    t_point coord;
+find_nearest_cell(t_cell *start, t_cell *end) {
+    t_cell *nearest;
 
-    coord.x = game->minotaur->x;
-    coord.y = game->minotaur->y;
-    start = get_cell_from_coords(coord);
-    coord.x = game->player->x;
-    coord.y = game->player->y;
-    end = get_cell_from_coords(coord);
-    return (find_nearest_cell(start, end));
+    explore_maze(start);
+    nearest = end;
+    while (nearest->parent != start)
+        nearest = nearest->parent;
+    return (nearest);
 }
 
-t_point
-get_nearest_to_player_cell_coordinate() {
-    return (get_nearest_to_player_cell()->coords);
+static int
+minotaur_walked_on_active_trap(int col, int row) {
+    t_point *cell;
+
+    cell = is_trap_active_cell(col, row);
+    if (cell != NULL) {
+        cl_remove_node_by_data(game->map->active_traps, cell,
+                               compare_map_cells);
+        free(cell);
+        return (1);
+    }
+    return 0;
+}
+
+void
+minotaur_move() {
+    t_cell *player;
+    t_cell *minotaur;
+    t_cell *nearest;
+
+    if (game->minotaur->is_trapped) {
+        game->minotaur->is_trapped--;
+        return;
+    }
+
+    // set positions
+    player = get_cell_from_coords((t_point){game->player->x, game->player->y});
+    minotaur =
+        get_cell_from_coords((t_point){game->minotaur->x, game->minotaur->y});
+    // finds nearest cell to player
+    nearest = find_nearest_cell(minotaur, player);
+    // moves minotaur to nearest cell
+    game->minotaur->x = nearest->coords.x;
+    game->minotaur->y = nearest->coords.y;
+    if (nearest == player) {
+        game->gamescene = LOSE;
+        render_gamescreen();
+        return;
+    }
+    if (minotaur_walked_on_active_trap(game->minotaur->x, game->minotaur->y))
+        game->minotaur->is_trapped = TRAP_PENALTY;
+    render_gamescreen();
 }

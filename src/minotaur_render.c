@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 10:37:31 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 23:39:15 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,12 @@ render_gamescreen(void) {
         draw_collectibles();
         draw_traps();
         draw_active_traps();
-        draw_player();
-        draw_minotaur();
+        if (game->minotaur->is_trapped) {
+            draw_minotaur();
+            draw_player();
+        } else {
+            draw_player();
+            draw_minotaur();
+        }
     }
 }

@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:17:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 18:08:05 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 23:07:14 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ allocate_data_structures_memory(void) {
     game->map->grid = (char **) malloc(sizeof(char *) * ROWS);
     for (int i = 0; i < ROWS; i++)
         game->map->grid[i] = (char *) malloc(sizeof(char) * COLS);
-    game->is_running = 0;
 }
 
 static void

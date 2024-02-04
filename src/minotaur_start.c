@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:03:26 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 17:45:27 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 22:48:43 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ start_game(void) {
     init_hooks();
     game->gamescene = MAIN;
     render_gamescreen();
-    pthread_create(&game->game_routine, NULL, game_routine, NULL);
+    // pthread_create(&game->game_routine, NULL, game_routine, NULL);
     mlx_loop(game->display.mlx);
-    pthread_join(game->game_routine, NULL);
+    // pthread_join(game->game_routine, NULL);
 }

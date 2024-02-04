@@ -24,11 +24,34 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <math.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+
+#define SCREEN_W         720
+#define SCREEN_H         1280
+#define HEADER_W         720
+#define HEADER_H         200
+#define HEADER_OFFSET_W  0
+#define HEADER_OFFSET_H  0
+#define SCENE_W          720
+#define SCENE_H          1000
+#define SCENE_OFFSET_W   0
+#define SCENE_OFFSET_H   200
+#define FOOTER_W         720
+#define FOOTER_H         80
+#define FOOTER_OFFSET_W  0
+#define FOOTER_OFFSET_H  1200
+#define FOOTER_TEXT_X    30
+#define FOOTER_TEXT_Y    1230
+#define ROWS             50
+#define COLS             36
+#define CELL_SIZE        SCENE_W / COLS
+#define HP_OFFSET_X      295
+#define HP_OFFSET_Y      39
+#define STATS_BAR_LENGTH 400
+#define STATS_BAR_HEIGHT 50
 
 typedef enum e_component { SCREEN, HEADER, SCENE, FOOTER } t_component;
 
@@ -43,7 +66,6 @@ typedef struct s_player {
     int y;
     int health;
     int has_trap;
-    int has_played;
 } t_player;
 
 typedef struct s_minotaur {
@@ -92,8 +114,6 @@ typedef struct s_game {
     t_player *player;
     t_minotaur *minotaur;
     t_gamescene gamescene;
-    int is_running;
-    pthread_t game_routine;
 } t_game;
 
 extern t_game *game;
@@ -139,6 +159,7 @@ void reset_cell_metadata(void *cell);
 void build_lair();
 // defined in minotaur_maze_algorithms.c
 void generate_maze(char **maze, int row, int col);
+void explore_maze(t_cell *start);
 t_cell *find_nearest_cell(t_cell *start, t_cell *end);
 
 // MLX SECTION
@@ -157,6 +178,5 @@ void move(t_movement direction);
 // defined in minotaur_mino.c
 t_cell *get_nearest_to_player_cell();
 t_point get_nearest_to_player_cell_coordinate();
-// defined in game_routine.c
-void *game_routine();
+void minotaur_move();
 #endif
