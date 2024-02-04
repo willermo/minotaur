@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 10:22:40 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 17:29:33 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,18 @@ setup_traps() {
 }
 
 static void
-initializeMaze(char **maze) {
-    // Initializes all cells as walls
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            maze[i][j] = '1';
-        }
-    }
-}
-
-static void
-setup_maze() {
+initialize_maze() {
     char **maze = game->map->grid;
 
+    // Initializes all cells as walls
+    for (int i = 0; i < ROWS; i++)
+        for (int j = 0; j < COLS; j++)
+            maze[i][j] = '1';
     // Mark the entry and exit points
     maze[ROWS - 1][1] = 'P';
     maze[0][COLS - 2] = 'E';
     // Generate the maze starting from the entry point
-    generateMaze(maze, ROWS - 1, 1);
+    generate_maze(maze, ROWS - 1, 1);
     // Ensure a path from the entry to the exit
     for (int i = 1; i < COLS - 1; i++) {
         if (maze[0][i] == '0') {
@@ -85,10 +79,10 @@ setup_maze() {
 
 void
 init_lair() {
-    initializeMaze(game->map->grid);
-    setup_maze();
+    initialize_maze();
     if (VERBOSE)
-        printMaze(game->map->grid);
+        print_maze(game->map->grid);
+    build_lair();
     setup_food();
     setup_traps();
 }

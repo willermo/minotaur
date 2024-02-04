@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:35:57 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 10:07:12 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 10:48:58 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ destroy_items(void) {
 
 static void
 free_data_structures_memory(void) {
+    cl_destroy_list(&game->lair);
     for (int i = 0; i < ROWS; i++)
         free(game->map->grid[i]);
     free(game->map->grid);
-    free(game->map->minotaur);
-    free(game->map->player);
+    free(game->minotaur);
+    free(game->player);
     free(game->map);
     free(game);
 }

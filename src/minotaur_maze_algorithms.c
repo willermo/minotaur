@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:10:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/03 20:09:33 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 19:41:59 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // Recursive backtracking algorithm to generate the maze
 void
-generateMaze(char **maze, int row, int col) {
+generate_maze(char **maze, int row, int col) {
     // Stop the recursion when it reaches the 'E' cell
     if (maze[row][col] == 'E') {
         return;
@@ -48,8 +48,59 @@ generateMaze(char **maze, int row, int col) {
                 maze[row + directions[order[i]][0] / 2]
                     [col + directions[order[i]][1] / 2] = '0';
                 // Recursively call the function on the next cell
-                generateMaze(maze, next_row, next_col);
+                generate_maze(maze, next_row, next_col);
             }
         }
     }
+}
+
+static void
+visit_neighbours(t_cell *source, t_cl_list *queue) {
+    t_cl_list *neighbour;
+    t_cell *cell;
+
+    neighbour = source->neighbours->next;
+    while (neighbour->data && (cell = (t_cell *) neighbour->data)) {
+        if (cell->color == WHITE) {
+            cell->color = GRAY;
+            cell->parent = source;
+            cell->distance = cell->parent->distance + 1;
+            cl_insert_begin(queue, cell);
+        }
+        neighbour = neighbour->next;
+    }
+    source->color = BLACK;
+}
+
+// BFS algorithm to find the shortest path from the start to the end of the maze
+static void
+bfs(t_cell *start) {
+    t_cl_list *queue;
+    t_cell *cell;
+
+    // resets metadata for each cell
+    cl_foreach(game->lair, reset_cell_metadata);
+    start->color = GRAY;
+    start->distance = 0;
+    start->parent = NULL;
+    queue = cl_init_list();
+    cl_insert_begin(queue, start);
+    while (cl_size(queue) > 0) {
+        cell = (t_cell *) cl_remove_end(queue)->data;
+        visit_neighbours(cell, queue);
+    }
+}
+
+t_cell *
+find_nearest_cell(t_cell *start, t_cell *end) {
+    t_cell *nearest;
+
+    print_cell(start);
+    print_cell(end);
+    print_neighbours(start);
+    bfs(start);
+    nearest = end;
+    while (nearest->parent != start)
+        nearest = nearest->parent;
+    return (nearest);
 }

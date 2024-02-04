@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:17:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/03 22:33:07 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 18:08:05 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ static void
 allocate_data_structures_memory(void) {
     game = (t_game *) malloc(sizeof(t_game));
     game->map = (t_map *) malloc(sizeof(t_map));
-    game->map->player = (t_player *) malloc(sizeof(t_player));
-    game->map->minotaur = (t_minotaur *) malloc(sizeof(t_minotaur));
+    game->player = (t_player *) malloc(sizeof(t_player));
+    game->minotaur = (t_minotaur *) malloc(sizeof(t_minotaur));
     game->map->grid = (char **) malloc(sizeof(char *) * ROWS);
     for (int i = 0; i < ROWS; i++)
         game->map->grid[i] = (char *) malloc(sizeof(char) * COLS);
+    game->is_running = 0;
 }
 
 static void
@@ -49,14 +50,14 @@ init_map_parameters(void) {
     game->map->end_pos[0] = COLS - 2;
     game->map->end_pos[1] = 0;
     // set player parameters
-    game->map->player->x = game->map->start_pos[0];
-    game->map->player->y = game->map->start_pos[1];
-    game->map->player->health = PLAYER_START_HP_POINTS;
-    game->map->player->has_trap = 1;
+    game->player->x = game->map->start_pos[0];
+    game->player->y = game->map->start_pos[1];
+    game->player->health = PLAYER_START_HP_POINTS;
+    game->player->has_trap = 1;
     // set minotaur parameters
-    game->map->minotaur->x = game->map->end_pos[0];
-    game->map->minotaur->y = game->map->end_pos[1];
-    game->map->minotaur->is_trapped = 0;
+    game->minotaur->x = game->map->end_pos[0];
+    game->minotaur->y = game->map->end_pos[1];
+    game->minotaur->is_trapped = 0;
 }
 
 static void

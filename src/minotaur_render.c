@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/03 22:31:51 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 10:37:31 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ draw_stats() {
     size[0] = STATS_BAR_LENGTH / PLAYER_MAX_HP_POINTS;
     size[1] = STATS_BAR_HEIGHT;
     while (j <= PLAYER_MAX_HP_POINTS) {
-        if (game->map->player->health >= j)
+        if (game->player->health >= j)
             draw_rectangle(game->refresh,
                            (t_point){HP_OFFSET_X + j * size[0], HP_OFFSET_Y},
                            HP_FULL_COLOR, size);
@@ -151,8 +151,8 @@ draw_player() {
 
     img = load_xpm_image(&game->display, XMP_EXPLORER);
     add_image(&game->display, img,
-              (t_point){game->map->player->x * CELL_SIZE + 2,
-                        game->map->player->y * CELL_SIZE + HEADER_H + 2});
+              (t_point){game->player->x * CELL_SIZE + 2,
+                        game->player->y * CELL_SIZE + HEADER_H + 2});
     if (game->player_image) {
         destroy_image(&game->display, game->player_image);
         free(game->player_image);
@@ -166,8 +166,8 @@ draw_minotaur() {
 
     img = load_xpm_image(&game->display, XPM_MINOTAUR);
     add_image(&game->display, img,
-              (t_point){game->map->minotaur->x * CELL_SIZE + 2,
-                        game->map->minotaur->y * CELL_SIZE + HEADER_H + 2});
+              (t_point){game->minotaur->x * CELL_SIZE + 2,
+                        game->minotaur->y * CELL_SIZE + HEADER_H + 2});
     if (game->minotaur_image) {
         destroy_image(&game->display, game->minotaur_image);
         free(game->minotaur_image);
@@ -188,7 +188,7 @@ setup_refresh(t_component comp, t_image ***ptr) {
         if (game->gamescene != GAME) {
             game->refresh = load_xpm_image(&game->display, XPM_HEADER);
         } else {
-            if (game->map->player->has_trap)
+            if (game->player->has_trap)
                 game->refresh = load_xpm_image(&game->display, XPM_STATS_TRAP);
             else
                 game->refresh =

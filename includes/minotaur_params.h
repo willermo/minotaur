@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:33:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/03 21:34:23 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 15:48:52 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define MINOTAUR_PARAMS_H
 
 #define VERBOSE                        1
+#define DEBUG                          0
 #define SCREEN_TITLE                   "Minotaur's Lair"
 #define SCREEN_W                       720
 #define SCREEN_H                       1280

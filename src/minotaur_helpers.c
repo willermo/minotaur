@@ -6,11 +6,32 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 21:03:29 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/03 00:07:10 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/04 19:14:05 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
+
+t_cell *
+get_cell_from_coords(t_point coord) {
+    t_cell cell;
+
+    cell.coords.x = coord.x;
+    cell.coords.y = coord.y;
+    return (cl_get_node_by_data(game->lair, &cell, compare_lair_cells)->data);
+}
+
+int
+is_walkable_cell(t_point coords) {
+    return (is_valid_coords(coords) &&
+            strchr("0PE", game->map->grid[coords.y][coords.x]) != NULL);
+}
+
+int
+is_valid_coords(t_point coords) {
+    return (coords.x >= 0 && coords.x < COLS && coords.y >= 0 &&
+            coords.y < ROWS);
+}
 
 char **
 clone_grid(char **grid) {
@@ -26,7 +47,17 @@ clone_grid(char **grid) {
 }
 
 int
-compare_cells(void *cell1, void *cell2) {
+compare_lair_cells(void *cell1, void *cell2) {
+    t_cell *c1 = (t_cell *) cell1;
+    t_cell *c2 = (t_cell *) cell2;
+
+    if (c1->coords.x == c2->coords.x && c1->coords.y == c2->coords.y)
+        return (0);
+    return (1);
+}
+
+int
+compare_map_cells(void *cell1, void *cell2) {
     t_point *c1 = (t_point *) cell1;
     t_point *c2 = (t_point *) cell2;
 

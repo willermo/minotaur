@@ -18,7 +18,8 @@ player_eats_food(int col, int row) {
 
     cell = is_food_cell(col, row);
     if (cell != NULL) {
-        cl_remove_node_by_data(game->map->collectibles, cell, compare_cells);
+        cl_remove_node_by_data(game->map->collectibles, cell,
+                               compare_map_cells);
         free(cell);
         return (1);
     }
@@ -31,7 +32,7 @@ player_gets_trap(int col, int row) {
 
     cell = is_trap_cell(col, row);
     if (cell != NULL) {
-        cl_remove_node_by_data(game->map->traps, cell, compare_cells);
+        cl_remove_node_by_data(game->map->traps, cell, compare_map_cells);
         free(cell);
         return (1);
     }
@@ -44,17 +45,17 @@ set_trap() {
     t_point *cell;
 
     cell = (t_point *) malloc(sizeof(t_point));
-    cell->x = game->map->player->x;
-    cell->y = game->map->player->y;
+    cell->x = game->player->x;
+    cell->y = game->player->y;
 
     cl_insert_end(game->map->active_traps, (void *) cell);
-    game->map->player->has_trap = 0;
-    sprintf(str, "Trap set at (%d, %d)", game->map->player->x,
-            game->map->player->y);
+    game->player->has_trap = 0;
+    sprintf(str, "Trap set at (%d, %d)", game->player->x, game->player->y);
     if (game->footer_text)
         free(game->footer_text);
     game->footer_text = strdup(str);
     render_gamescreen();
+    game->player->has_played = 1;
 }
 
 static void
@@ -63,10 +64,11 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
     if (is_exit_cell(new_col, new_row)) {
         game->gamescene = WIN;
         render_gamescreen();
+        game->is_running = 0;
         return;
     }
-    game->map->player->x = new_col;
-    game->map->player->y = new_row;
+    game->player->x = new_col;
+    game->player->y = new_row;
     if (game->footer_text) {
         free(game->footer_text);
         game->footer_text = NULL;
@@ -76,24 +78,25 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
     if (game->footer_text)
         free(game->footer_text);
     game->footer_text = strdup(str);
-    game->map->player->health -= MOVEMENT_COST;
-    if (game->map->player->has_trap == 0 && player_gets_trap(new_col, new_row))
-        game->map->player->has_trap = 1;
+    game->player->health -= MOVEMENT_COST;
+    if (game->player->has_trap == 0 && player_gets_trap(new_col, new_row))
+        game->player->has_trap = 1;
     if (player_eats_food(new_col, new_row))
-        game->map->player->health = ft_min(
-            game->map->player->health + FOOD_RESTORE, PLAYER_MAX_HP_POINTS);
-    if (!game->map->player->has_trap && player_gets_trap(new_col, new_row))
-        game->map->player->has_trap = 1;
-    if (game->map->player->health <= 0)
+        game->player->health =
+            ft_min(game->player->health + FOOD_RESTORE, PLAYER_MAX_HP_POINTS);
+    if (!game->player->has_trap && player_gets_trap(new_col, new_row))
+        game->player->has_trap = 1;
+    if (game->player->health <= 0)
         game->gamescene = LOSE;
     render_gamescreen();
+    game->player->has_played = 1;
 }
 
 void
 move(t_movement direction) {
     char **grid = game->map->grid;
-    int col = game->map->player->x;
-    int row = game->map->player->y;
+    int col = game->player->x;
+    int row = game->player->y;
 
     switch (direction) {
     case UP:
