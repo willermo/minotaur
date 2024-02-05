@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:16:37 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/05 00:56:19 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/05 02:31:00 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ destroy_graphics(void) {
     destroy_image(&game->display, game->footer);
     free(game->footer);
     game->footer = NULL;
-    destroy_image(&game->display, game->player_image);
-    free(game->player_image);
-    game->player_image = NULL;
-    destroy_image(&game->display, game->minotaur_image);
-    free(game->minotaur_image);
-    game->minotaur_image = NULL;
+    if (game->player_image) {
+        destroy_image(&game->display, game->player_image);
+        free(game->player_image);
+        game->player_image = NULL;
+    }
+    if (game->minotaur_image) {
+        destroy_image(&game->display, game->minotaur_image);
+        free(game->minotaur_image);
+        game->minotaur_image = NULL;
+    }
     destroy_collectibles();
     destroy_traps();
     destroy_active_traps();
