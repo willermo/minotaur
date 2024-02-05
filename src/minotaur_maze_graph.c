@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:53:56 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 19:28:27 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/05 02:21:19 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ add_neighbours(void *cell) {
     add_neighbour(c, get_neighbour((t_point){c->coords.x + 1, c->coords.y}));
     add_neighbour(c, get_neighbour((t_point){c->coords.x, c->coords.y - 1}));
     add_neighbour(c, get_neighbour((t_point){c->coords.x, c->coords.y + 1}));
-    print_neighbours(c);
 }
 
 static void
@@ -75,8 +74,27 @@ build_lair() {
         for (int j = 0; j < COLS; j++)
             if (strchr("0PE", game->map->grid[i][j]))
                 insert_cell((t_point){j, i});
-    if (DEBUG)
-        cl_foreach(game->lair, print_cell);
     //  adding neighbours to each cell
     cl_foreach(game->lair, add_neighbours);
+}
+
+static void
+clear_neighbours(void *cell) {
+    t_cell *c = (t_cell *) cell;
+
+    while (cl_size(c->neighbours)) {
+        free(cl_remove_begin(c->neighbours));
+    }
+}
+
+static void
+clear_cell(void *cell) {
+    free(((t_cell *) cell)->neighbours);
+}
+
+void
+destroy_lair() {
+    cl_foreach(game->lair, clear_neighbours);
+    cl_foreach(game->lair, clear_cell);
+    cl_destroy_list(&game->lair);
 }

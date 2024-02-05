@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:10:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 22:57:11 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/05 00:41:09 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ visit_neighbours(t_cell *source, t_cl_list *queue) {
 void
 explore_maze(t_cell *start) {
     t_cl_list *queue;
+    t_cl_list *temp;
     t_cell *cell;
 
     // resets metadata for each cell
@@ -86,7 +87,10 @@ explore_maze(t_cell *start) {
     queue = cl_init_list();
     cl_insert_begin(queue, start);
     while (cl_size(queue) > 0) {
-        cell = (t_cell *) cl_remove_end(queue)->data;
+        temp = cl_remove_end(queue);
+        cell = (t_cell *) temp->data;
         visit_neighbours(cell, queue);
+        free(temp);
     }
+    cl_destroy_list(&queue);
 }

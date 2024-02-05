@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:16:37 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/03 22:44:17 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/05 00:56:19 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ destroy_graphics(void) {
 void
 end_game(void) {
     destroy_graphics();
+    // destroy_lair();
     mlx_clear_window(game->display.mlx, game->display.win);
     mlx_destroy_window(game->display.mlx, game->display.win);
     mlx_destroy_display(game->display.mlx);

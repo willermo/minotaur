@@ -157,6 +157,7 @@ void refresh_lair();
 // defined in minotaur_maze_graph.c
 void reset_cell_metadata(void *cell);
 void build_lair();
+void destroy_lair();
 // defined in minotaur_maze_algorithms.c
 void generate_maze(char **maze, int row, int col);
 void explore_maze(t_cell *start);
