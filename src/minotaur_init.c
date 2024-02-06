@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:17:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 23:07:14 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 19:51:32 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ init_game_structures(void) {
 void
 init_game(void) {
     init_game_structures();
-    init_lair();
+    setup_lair();
 }

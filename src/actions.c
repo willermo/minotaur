@@ -12,30 +12,54 @@
 
 #include "minotaur.h"
 
-static int
-player_eats_food(int col, int row) {
-    t_point *cell;
+// static int
+// player_eats_food(int col, int row) {
+//     t_point *cell;
 
-    if ((cell = is_food_cell(col, row))) {
-        cl_add_node_end(game->map->free_cells,
-                        cl_remove_node_by_data(game->map->collectibles, cell,
-                                               compare_map_cells));
-        return (1);
-    }
-    return 0;
+//     if ((cell = is_food_cell(col, row))) {
+//         cl_add_node_end(game->map->free_cells,
+//                         cl_remove_node_by_data(game->map->collectibles, cell,
+//                                                compare_map_cells));
+//         return (1);
+//     }
+//     return 0;
+// }
+
+static void
+player_enters_food_cell(t_cell *cell) {
+    cl_add_node_end(game->map->free_cells,
+                    cl_remove_node_by_data(game->map->collectibles,
+                                           &cell->coords, compare_map_cells));
+    destroy_image(&game->display, cell->sprite_image);
+    cell->sprite = NONE;
+    cell->sprite_image = NULL;
 }
 
-static int
-player_gets_trap(int col, int row) {
-    t_point *cell;
+// static int
+// player_gets_trap(int col, int row) {
+//     t_point *cell;
 
-    if ((cell = is_trap_cell(col, row))) {
-        cl_add_node_end(
-            game->map->free_cells,
-            cl_remove_node_by_data(game->map->traps, cell, compare_map_cells));
-        return (1);
-    }
-    return 0;
+//     if ((cell = is_trap_cell(col, row))) {
+//         cl_add_node_end(
+//             game->map->free_cells,
+//             cl_remove_node_by_data(game->map->traps, cell,
+//             compare_map_cells));
+//         return (1);
+//     }
+//     return 0;
+// }
+
+static void
+player_enters_trap_cell(t_cell *cell) {
+    if (game->player->has_trap)
+        return;
+    cl_add_node_end(game->map->free_cells,
+                    cl_remove_node_by_data(game->map->traps, &cell->coords,
+                                           compare_map_cells));
+    destroy_image(&game->display, cell->sprite_image);
+    cell->sprite = NONE;
+    cell->sprite_image = NULL;
+    game->player->has_trap++;
 }
 
 void
@@ -63,6 +87,15 @@ static int
 player_hit_minotaur() {
     return (game->player->x == game->minotaur->x &&
             game->player->y == game->minotaur->y);
+}
+
+static void
+player_enters_minotaur_cell(t_cell *to) {
+    // todo
+    if (game->minotaur->is_trapped)
+        return;
+    game->gamescene = LOSE;
+    render_gamescreen();
 }
 
 static void
@@ -101,26 +134,66 @@ update_position(int old_col, int old_row, int new_col, int new_row) {
 
 void
 move(t_movement direction) {
-    char **grid = game->map->grid;
-    int col = game->player->x;
-    int row = game->player->y;
+    t_cell *from;
+    t_cell *to;
 
+    from = get_cell_from_coords((t_point){game->player->x, game->player->y});
     switch (direction) {
     case UP:
-        if (row > 0 && strchr("0EP", grid[row - 1][col]))
-            update_position(col, row, col, row - 1);
+        to = get_cell_from_coords(
+            (t_point){game->player->x, game->player->y - 1});
         break;
     case DOWN:
-        if (row < ROWS - 1 && strchr("0EP", grid[row + 1][col]))
-            update_position(col, row, col, row + 1);
+        to = get_cell_from_coords(
+            (t_point){game->player->x, game->player->y + 1});
         break;
     case LEFT:
-        if (col > 0 && strchr("0EP", grid[row][col - 1]))
-            update_position(col, row, col - 1, row);
+        to = get_cell_from_coords(
+            (t_point){game->player->x - 1, game->player->y});
         break;
     case RIGHT:
-        if (col < COLS - 1 && strchr("0EP", grid[row][col + 1]))
-            update_position(col, row, col + 1, row);
+        to = get_cell_from_coords(
+            (t_point){game->player->x + 1, game->player->y});
         break;
     }
+    if (!to)
+        return;
+    switch (to->sprite) {
+    case FOOD:
+        player_enters_food_cell(to);
+        break;
+    case TRAP:
+        player_enters_food_cell(to);
+        break;
+    case MINO:
+        // todo mino routine
+        break;
+    }
+    update_position(from->coords.x, from->coords.y, to->coords.x, to->coords.y);
 }
+
+// void
+// move(t_movement direction) {
+//     char **grid = game->map->grid;
+//     int col = game->player->x;
+//     int row = game->player->y;
+
+//     switch (direction) {
+//     case UP:
+//         if (row > 0 && strchr("0EP", grid[row - 1][col]))
+//             update_position(col, row, col, row - 1);
+//         break;
+//     case DOWN:
+//         if (row < ROWS - 1 && strchr("0EP", grid[row + 1][col]))
+//             update_position(col, row, col, row + 1);
+//         break;
+//     case LEFT:
+//         if (col > 0 && strchr("0EP", grid[row][col - 1]))
+//             update_position(col, row, col - 1, row);
+//         break;
+//     case RIGHT:
+//         if (col < COLS - 1 && strchr("0EP", grid[row][col + 1]))
+//             update_position(col, row, col + 1, row);
+//         break;
+//     }
+// }

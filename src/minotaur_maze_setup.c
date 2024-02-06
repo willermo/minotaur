@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 14:28:50 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:04:37 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,44 +25,6 @@ cell_is_free(int i, int j) {
     if (is_trap_cell(j, i))
         return (0);
     return (1);
-}
-
-static void
-update_free_cells() {
-    t_point *cell;
-
-    cl_delete_list(game->map->free_cells);
-    for (int i = 0; i < ROWS; i++)
-        for (int j = 0; j < COLS; j++)
-            if (cell_is_free(i, j)) {
-                cell = (t_point *) malloc(sizeof(t_point));
-                cell->x = j;
-                cell->y = i;
-                cl_insert_end(game->map->free_cells, cell);
-            }
-}
-
-static void
-setup_food() {
-    int free_cells_count;
-
-    free_cells_count = cl_size(game->map->free_cells);
-    for (int i = 0; i < COLLECTIBLES; i++)
-        cl_add_node_end(
-            game->map->collectibles,
-            cl_remove_node_by_position(game->map->free_cells,
-                                       rand() % free_cells_count--));
-}
-
-static void
-setup_traps() {
-    int free_cells_count;
-
-    free_cells_count = cl_size(game->map->free_cells);
-    for (int i = 0; i < TRAPS; i++)
-        cl_add_node_end(game->map->traps, cl_remove_node_by_position(
-                                              game->map->free_cells,
-                                              rand() % free_cells_count--));
 }
 
 static void
@@ -89,14 +51,11 @@ initialize_maze() {
 }
 
 void
-init_lair() {
+setup_lair() {
     initialize_maze();
     if (VERBOSE)
         print_maze(game->map->grid);
     build_lair();
-    update_free_cells();
-    setup_food();
-    setup_traps();
 }
 
 void

@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 23:39:15 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:33:24 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ static void
 draw_player() {
     t_image *img;
 
-    img = load_xpm_image(&game->display, XMP_EXPLORER);
+    img = load_xpm_image(&game->display, XPM_EXPLORER);
     add_image(&game->display, img,
               (t_point){game->player->x * CELL_SIZE + 2,
                         game->player->y * CELL_SIZE + HEADER_H + 2});
@@ -249,16 +249,16 @@ render_gamescreen(void) {
     refresh(HEADER, (t_point){HEADER_OFFSET_W, HEADER_OFFSET_H});
     refresh(SCENE, (t_point){SCENE_OFFSET_W, SCENE_OFFSET_H});
     refresh(FOOTER, (t_point){FOOTER_OFFSET_W, FOOTER_OFFSET_H});
-    if (game->gamescene == GAME) {
-        draw_collectibles();
-        draw_traps();
-        draw_active_traps();
-        if (game->minotaur->is_trapped) {
-            draw_minotaur();
-            draw_player();
-        } else {
-            draw_player();
-            draw_minotaur();
-        }
-    }
+    // if (game->gamescene == GAME) {
+    //     draw_collectibles();
+    //     draw_traps();
+    //     draw_active_traps();
+    //     if (game->minotaur->is_trapped) {
+    //         draw_minotaur();
+    //         draw_player();
+    //     } else {
+    //         draw_player();
+    //         draw_minotaur();
+    //     }
+    // }
 }

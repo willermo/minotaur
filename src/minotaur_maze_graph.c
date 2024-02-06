@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:53:56 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 12:17:38 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:23:32 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,90 @@ insert_cell(t_point coords) {
     cell->color = WHITE;
     cell->parent = NULL;
     cell->distance = -1;
+    cell->sprite = NONE;
+    cell->sprite_image = NULL;
     cl_insert_begin(game->lair, cell);
+}
+
+static void
+setup_food() {
+    int free_cells_count;
+    t_cl_list *node;
+    t_cell *cell;
+
+    free_cells_count = cl_size(game->map->free_cells);
+    for (int i = 0; i < COLLECTIBLES; i++) {
+        node = cl_remove_node_by_position(game->map->free_cells,
+                                          rand() % free_cells_count--);
+        ((t_cell *) node->data)->sprite = FOOD;
+        ((t_cell *) node->data)->sprite_image =
+            load_xpm_image(&game->display, XPM_FOOD);
+        cl_add_node_end(game->map->collectibles, node);
+        add_image(&game->display, ((t_cell *) node->data)->sprite_image,
+                  (t_point){((t_cell *) node->data)->coords.x * CELL_SIZE + 2,
+                            ((t_cell *) node->data)->coords.y * CELL_SIZE +
+                                HEADER_H + 2});
+    }
+}
+
+static void
+setup_traps() {
+    int free_cells_count;
+    t_cl_list *node;
+    t_cell *cell;
+
+    free_cells_count = cl_size(game->map->free_cells);
+    for (int i = 0; i < TRAPS; i++) {
+        node = cl_remove_node_by_position(game->map->free_cells,
+                                          rand() % free_cells_count--);
+        ((t_cell *) node->data)->sprite = TRAP;
+        ((t_cell *) node->data)->sprite_image =
+            load_xpm_image(&game->display, XPM_TRAP_COLLECTIBLE);
+        cl_add_node_end(game->map->traps, node);
+        add_image(&game->display, ((t_cell *) node->data)->sprite_image,
+                  (t_point){((t_cell *) node->data)->coords.x * CELL_SIZE + 2,
+                            ((t_cell *) node->data)->coords.y * CELL_SIZE +
+                                HEADER_H + 2});
+    }
+}
+
+static void
+setup_player() {
+    t_cell *cell;
+
+    cell = (t_cell *) get_cell_from_coords(
+        (t_point){game->map->start_pos[0], game->map->start_pos[1]});
+    cell->sprite = PLAYER;
+    cell->sprite_image = load_xpm_image(&game->display, XPM_EXPLORER);
+    add_image(&game->display, cell->sprite_image,
+              (t_point){cell->coords.x * CELL_SIZE + 2,
+                        cell->coords.y * CELL_SIZE + HEADER_H + 2});
+}
+
+static void
+setup_minotaur() {
+    t_cell *cell;
+
+    cell = (t_cell *) get_cell_from_coords(
+        (t_point){game->map->end_pos[0], game->map->end_pos[1]});
+    cell->sprite = MINO;
+    cell->sprite_image = load_xpm_image(&game->display, XPM_MINOTAUR);
+    add_image(&game->display, cell->sprite_image,
+              (t_point){cell->coords.x * CELL_SIZE + 2,
+                        cell->coords.y * CELL_SIZE + HEADER_H + 2});
+}
+
+static void
+init_lair(void) {
+    game->lair = cl_init_list();
+
+    // creating adjacency list
+    game->lair = cl_init_list();
+    // populating adjacency list
+    for (int i = 0; i < ROWS; i++)
+        for (int j = 0; j < COLS; j++)
+            if (strchr("0PE", game->map->grid[i][j]))
+                insert_cell((t_point){j, i});
 }
 
 void
@@ -65,17 +148,30 @@ reset_cell_metadata(void *cell) {
     c->distance = -1;
 }
 
+static void
+update_free_cells() {
+    t_point *cell;
+    t_cl_list *node;
+
+    cl_delete_list(game->map->free_cells);
+    node = game->lair->next;
+    while (node->data) {
+        if (((t_cell *) node->data)->sprite == NONE)
+            cl_insert_end(game->map->free_cells, node->data);
+        node = node->next;
+    }
+}
+
 void
 build_lair() {
-    // creating adjacency list
-    game->lair = cl_init_list();
-    // populating adjacency list
-    for (int i = 0; i < ROWS; i++)
-        for (int j = 0; j < COLS; j++)
-            if (strchr("0PE", game->map->grid[i][j]))
-                insert_cell((t_point){j, i});
+    init_lair();
     //  adding neighbours to each cell
     cl_foreach(game->lair, add_neighbours);
+    update_free_cells();
+    setup_food();
+    setup_traps();
+    setup_player();
+    setup_minotaur();
 }
 
 static void

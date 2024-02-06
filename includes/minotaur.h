@@ -61,6 +61,8 @@ typedef enum e_movement { UP, DOWN, LEFT, RIGHT } t_movement;
 
 typedef enum e_cell_color { WHITE, GRAY, BLACK } t_cell_color;
 
+typedef enum e_sprite { NONE, FOOD, TRAP, ACTIVE_TRAP, PLAYER, MINO } t_sprite;
+
 typedef struct s_player {
     int x;
     int y;
@@ -94,6 +96,8 @@ typedef struct s_cell {
     t_cell_color color;
     int distance;
     t_cell *parent;
+    t_sprite sprite;
+    t_image *sprite_image;
 } t_cell;
 
 typedef struct s_game {

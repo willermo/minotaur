@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:33:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 23:16:27 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:16:54 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@
 #define XPM_TRAP_COLLECTIBLE           "./assets/sprites/trap_collectible.xpm"
 #define XPM_TRAP_ACTIVE                "./assets/sprites/trap_active.xpm"
 #define XPM_FOOD                       "./assets/sprites/food.xpm"
-#define XMP_EXPLORER                   "./assets/sprites/explorer.xpm"
+#define XPM_EXPLORER                   "./assets/sprites/explorer.xpm"
 #define XPM_MINOTAUR                   "./assets/sprites/minotaur.xpm"
 #endif
