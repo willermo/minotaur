@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 13:06:02 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:28:50 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void
 setup_food() {
     int free_cells_count;
 
-    update_free_cells();
     free_cells_count = cl_size(game->map->free_cells);
     for (int i = 0; i < COLLECTIBLES; i++)
         cl_add_node_end(
@@ -59,7 +58,6 @@ static void
 setup_traps() {
     int free_cells_count;
 
-    update_free_cells();
     free_cells_count = cl_size(game->map->free_cells);
     for (int i = 0; i < TRAPS; i++)
         cl_add_node_end(game->map->traps, cl_remove_node_by_position(
@@ -96,6 +94,7 @@ init_lair() {
     if (VERBOSE)
         print_maze(game->map->grid);
     build_lair();
+    update_free_cells();
     setup_food();
     setup_traps();
 }

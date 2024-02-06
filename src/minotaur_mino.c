@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 23:55:57 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 14:02:52 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 14:17:49 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@ static int
 minotaur_walked_on_active_trap(int col, int row) {
     t_point *cell;
 
-    cell = is_trap_active_cell(col, row);
-    if (cell != NULL) {
+    if ((cell = is_trap_active_cell(col, row))) {
         cl_add_node_end(game->map->free_cells,
                         cl_remove_node_by_data(game->map->active_traps, cell,
                                                compare_map_cells));
-        free(cell);
         return (1);
     }
     return 0;

@@ -16,13 +16,10 @@ static int
 player_eats_food(int col, int row) {
     t_point *cell;
 
-    cell = is_food_cell(col, row);
-    if (cell != NULL) {
-
+    if ((cell = is_food_cell(col, row))) {
         cl_add_node_end(game->map->free_cells,
                         cl_remove_node_by_data(game->map->collectibles, cell,
                                                compare_map_cells));
-        free(cell);
         return (1);
     }
     return 0;
@@ -32,12 +29,10 @@ static int
 player_gets_trap(int col, int row) {
     t_point *cell;
 
-    cell = is_trap_cell(col, row);
-    if (cell != NULL) {
+    if ((cell = is_trap_cell(col, row))) {
         cl_add_node_end(
             game->map->free_cells,
             cl_remove_node_by_data(game->map->traps, cell, compare_map_cells));
-        free(cell);
         return (1);
     }
     return 0;
@@ -48,7 +43,6 @@ set_trap() {
     char str[100];
     t_point cell;
 
-    // cell = (t_point *) malloc(sizeof(t_point));
     cell.x = game->player->x;
     cell.y = game->player->y;
 
@@ -56,7 +50,6 @@ set_trap() {
                     cl_remove_node_by_data(game->map->free_cells, &cell,
                                            compare_map_cells));
 
-    // cl_insert_end(game->map->active_traps, (void *) cell);
     game->player->has_trap = 0;
     sprintf(str, "Trap set at (%d, %d)", game->player->x, game->player->y);
     if (game->footer_text)
