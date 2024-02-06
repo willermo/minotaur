@@ -6,11 +6,26 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 17:29:33 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 13:06:02 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
+
+static int
+cell_is_free(int i, int j) {
+    if (game->map->grid[i][j] != '0')
+        return (0);
+    if (is_starting_cell(j, i))
+        return (0);
+    if (is_exit_cell(j, i))
+        return (0);
+    if (is_food_cell(j, i))
+        return (0);
+    if (is_trap_cell(j, i))
+        return (0);
+    return (1);
+}
 
 static void
 update_free_cells() {
@@ -19,9 +34,7 @@ update_free_cells() {
     cl_delete_list(game->map->free_cells);
     for (int i = 0; i < ROWS; i++)
         for (int j = 0; j < COLS; j++)
-            if (game->map->grid[i][j] == '0' && !is_starting_cell(j, i) &&
-                !is_exit_cell(j, i) && is_food_cell(j, i) == NULL &&
-                is_trap_cell(j, i) == NULL) {
+            if (cell_is_free(i, j)) {
                 cell = (t_point *) malloc(sizeof(t_point));
                 cell->x = j;
                 cell->y = i;

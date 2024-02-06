@@ -120,6 +120,7 @@ extern t_game *game;
 
 // UTILS SECTION
 // defined in minotaur_debug.c
+void print_maze(char **maze);
 void print_cell(void *cell);
 void print_neighbours(void *cell);
 // defined in minotaur_helpers.c
@@ -135,7 +136,6 @@ t_point *is_food_cell(int col, int row);
 t_point *is_trap_cell(int col, int row);
 t_point *is_trap_active_cell(int col, int row);
 // defined in minotaur_utils.c
-void print_maze(char **maze);
 void destroy_collectibles();
 void destroy_traps();
 void destroy_active_traps();

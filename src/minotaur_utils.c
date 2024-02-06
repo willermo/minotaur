@@ -6,21 +6,11 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 20:05:33 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 17:28:06 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 12:53:58 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
-
-void
-print_maze(char **maze) {
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            printf("%c ", maze[i][j]);
-        }
-        printf("\n");
-    }
-}
 
 void
 destroy_collectibles() {

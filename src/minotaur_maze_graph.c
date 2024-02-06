@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:53:56 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/05 02:21:19 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/06 12:17:38 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ static void
 clear_neighbours(void *cell) {
     t_cell *c = (t_cell *) cell;
 
+    // cl_foreach(c->neighbours, free);
     while (cl_size(c->neighbours)) {
         free(cl_remove_begin(c->neighbours));
     }
