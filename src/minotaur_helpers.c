@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 21:03:29 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 23:20:24 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/07 23:57:40 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,16 @@ is_free_cell(t_cell *cell) {
         free = free->next;
     }
     return (0);
+}
+
+int
+is_player_cell(t_cell *cell) {
+    return (cell == get_player_cell());
+}
+
+int
+is_minotaur_cell(t_cell *cell) {
+    return (cell == get_minotaur_cell());
 }
 
 int

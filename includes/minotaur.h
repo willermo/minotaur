@@ -155,6 +155,8 @@ int is_food_cell(t_cell *cell);
 int is_trap_cell(t_cell *cell);
 int is_trap_active_cell(t_cell *cell);
 int is_free_cell(t_cell *cell);
+int is_player_cell(t_cell *cell);
+int is_minotaur_cell(t_cell *cell);
 int is_walkable_cell(t_point coords);
 int is_valid_coords(t_point coords);
 char **clone_grid(char **grid);
@@ -214,4 +216,10 @@ void move(t_movement direction);
 t_cell *get_nearest_to_player_cell();
 t_point get_nearest_to_player_cell_coordinate();
 void minotaur_move();
+// defined in events.c
+void player_enters_food_cell(t_cell *cell);
+void player_enters_trap_cell(t_cell *cell);
+void player_enters_minotaur_cell(t_cell *cell);
+void player_enters_exit_cell(t_cell *cell);
+void minotaur_enters_active_trap_celll(t_cell *cell);
 #endif
