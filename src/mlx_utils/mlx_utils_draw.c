@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:26:05 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/02 13:23:07 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/07 18:08:18 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,26 @@ draw_rectangle(t_image *image, t_point coord, int color, int size[2]) {
         while (j < size[1]) {
             draw_pixel(image, (t_point){coord.x + i, coord.y + j}, color);
             j++;
+        }
+        i++;
+    }
+}
+
+void
+draw_background(t_image *img, t_rgba color, int random, int progressive) {
+    int i;
+    int j;
+
+    i = 0;
+    while (i < img->height) {
+        j = 0;
+        while (j < img->width) {
+            if (random)
+                draw_pixel(img, (t_point){j++, i}, get_random_color());
+            else if (progressive)
+                draw_pixel(img, (t_point){j++, i}, color++ % 0xFFFFFF);
+            else
+                draw_pixel(img, (t_point){j++, i}, color);
         }
         i++;
     }

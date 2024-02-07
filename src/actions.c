@@ -137,38 +137,28 @@ move(t_movement direction) {
     t_cell *from;
     t_cell *to;
 
-    from = get_cell_from_coords((t_point){game->player->x, game->player->y});
+    from = get_cell_from_coords(game->player->coords);
     switch (direction) {
     case UP:
         to = get_cell_from_coords(
-            (t_point){game->player->x, game->player->y - 1});
+            (t_point){game->player->coords.x, game->player->coords.y - 1});
         break;
     case DOWN:
         to = get_cell_from_coords(
-            (t_point){game->player->x, game->player->y + 1});
+            (t_point){game->player->coords.x, game->player->coords.y + 1});
         break;
     case LEFT:
         to = get_cell_from_coords(
-            (t_point){game->player->x - 1, game->player->y});
+            (t_point){game->player->coords.x - 1, game->player->coords.y});
         break;
     case RIGHT:
         to = get_cell_from_coords(
-            (t_point){game->player->x + 1, game->player->y});
+            (t_point){game->player->coords.x + 1, game->player->coords.y});
         break;
     }
     if (!to)
         return;
-    switch (to->sprite) {
-    case FOOD:
-        player_enters_food_cell(to);
-        break;
-    case TRAP:
-        player_enters_food_cell(to);
-        break;
-    case MINO:
-        // todo mino routine
-        break;
-    }
+    // todo: catch and bind events
     update_position(from->coords.x, from->coords.y, to->coords.x, to->coords.y);
 }
 

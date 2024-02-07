@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 21:03:29 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 19:14:05 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/07 23:20:24 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,87 @@ get_cell_from_coords(t_point coord) {
     return (cl_get_node_by_data(game->lair, &cell, compare_lair_cells)->data);
 }
 
+t_cell *
+get_player_cell() {
+    return (get_cell_from_coords(game->player->coords));
+}
+
+t_cell *
+get_minotaur_cell() {
+    return (get_cell_from_coords(game->minotaur->coords));
+}
+
+t_cell *
+get_enter_cell() {
+    return (get_cell_from_coords(game->map->start_pos));
+}
+
+t_cell *
+get_exit_cell() {
+    return (get_cell_from_coords(game->map->end_pos));
+}
+
+int
+is_enter_cell(t_cell *cell) {
+    return (cell == get_enter_cell());
+}
+
+int
+is_exit_cell(t_cell *cell) {
+    return (cell == get_exit_cell());
+}
+
+int
+is_food_cell(t_cell *cell) {
+    t_cl_list *food = game->collectibles->food->next;
+
+    while (food->data != NULL) {
+        if (cell == (t_cell *) food->data)
+            return (1);
+        food = food->next;
+    }
+    return (0);
+}
+
+int
+is_trap_cell(t_cell *cell) {
+    t_cl_list *trap = game->collectibles->traps->next;
+
+    while (trap->data != NULL) {
+        if (cell == (t_cell *) trap->data)
+            return (1);
+        trap = trap->next;
+    }
+    return (0);
+}
+
+int
+is_trap_active_cell(t_cell *cell) {
+    t_cl_list *trap = game->collectibles->active_traps->next;
+
+    while (trap->data != NULL) {
+        if (cell == (t_cell *) trap->data)
+            return (1);
+        trap = trap->next;
+    }
+    return (0);
+}
+
+int
+is_free_cell(t_cell *cell) {
+    t_cl_list *free = game->collectibles->free_cells->next;
+
+    while (free->data != NULL) {
+        if (cell == (t_cell *) free->data)
+            return (1);
+        free = free->next;
+    }
+    return (0);
+}
+
 int
 is_walkable_cell(t_point coords) {
-    return (is_valid_coords(coords) &&
-            strchr("0PE", game->map->grid[coords.y][coords.x]) != NULL);
+    return (cl_get_node_position(game->lair, &coords, compare_lair_cells));
 }
 
 int
@@ -57,66 +134,11 @@ compare_lair_cells(void *cell1, void *cell2) {
 }
 
 int
-compare_map_cells(void *cell1, void *cell2) {
-    t_point *c1 = (t_point *) cell1;
-    t_point *c2 = (t_point *) cell2;
+compare_coords(void *coord1, void *coord2) {
+    t_point *c1 = (t_point *) coord1;
+    t_point *c2 = (t_point *) coord2;
 
     if (c1->x == c2->x && c1->y == c2->y)
         return (0);
     return (1);
-}
-
-int
-is_starting_cell(int col, int row) {
-    return (col == game->map->start_pos[0] && row == game->map->start_pos[1]);
-}
-
-int
-is_exit_cell(int col, int row) {
-    return (col == game->map->end_pos[0] && row == game->map->end_pos[1]);
-}
-
-t_point *
-is_food_cell(int col, int row) {
-    t_point *cell;
-    t_cl_list *collectible;
-
-    collectible = game->map->collectibles->next;
-    while (collectible->data != NULL) {
-        cell = (t_point *) collectible->data;
-        if (cell->x == col && cell->y == row)
-            return (cell);
-        collectible = collectible->next;
-    }
-    return (NULL);
-}
-
-t_point *
-is_trap_cell(int col, int row) {
-    t_point *cell;
-    t_cl_list *trap;
-
-    trap = game->map->traps->next;
-    while (trap->data != NULL) {
-        cell = (t_point *) trap->data;
-        if (cell->x == col && cell->y == row)
-            return (cell);
-        trap = trap->next;
-    }
-    return (NULL);
-}
-
-t_point *
-is_trap_active_cell(int col, int row) {
-    t_point *cell;
-    t_cl_list *trap;
-
-    trap = game->map->active_traps->next;
-    while (trap->data != NULL) {
-        cell = (t_point *) trap->data;
-        if (cell->x == col && cell->y == row)
-            return (cell);
-        trap = trap->next;
-    }
-    return (NULL);
 }

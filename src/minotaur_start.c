@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:03:26 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/05 00:25:23 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/07 22:34:34 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static void
 init_graphics(void) {
-    game->screen = NULL;
-    game->header = NULL;
-    game->scene = NULL;
-    game->footer = NULL;
-    game->refresh = NULL;
-    game->player_image = NULL;
-    game->minotaur_image = NULL;
+    game->components->screen = NULL;
+    game->components->header = NULL;
+    game->components->scene = NULL;
+    game->components->footer = NULL;
+    game->components->refresh = NULL;
+    // game->player_image = NULL;
+    // game->minotaur_image = NULL;
     game->footer_text = NULL;
 }
 

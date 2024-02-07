@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:16:37 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 11:46:42 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/07 22:40:50 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,15 @@
 
 static void
 destroy_graphics(void) {
-    destroy_image(&game->display, game->header);
-    free(game->header);
-    game->header = NULL;
-    destroy_image(&game->display, game->scene);
-    free(game->scene);
-    game->scene = NULL;
-    destroy_image(&game->display, game->footer);
-    free(game->footer);
-    game->footer = NULL;
-    if (game->player_image) {
-        destroy_image(&game->display, game->player_image);
-        free(game->player_image);
-        game->player_image = NULL;
-    }
-    if (game->minotaur_image) {
-        destroy_image(&game->display, game->minotaur_image);
-        free(game->minotaur_image);
-        game->minotaur_image = NULL;
-    }
-    destroy_collectibles();
-    destroy_traps();
-    destroy_active_traps();
+    destroy_image(&game->display, game->components->header);
+    free(game->components->header);
+    game->components->header = NULL;
+    destroy_image(&game->display, game->components->scene);
+    free(game->components->scene);
+    game->components->scene = NULL;
+    destroy_image(&game->display, game->components->footer);
+    free(game->components->footer);
+    game->components->footer = NULL;
 }
 
 void

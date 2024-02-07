@@ -6,25 +6,48 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 21:04:37 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/07 19:57:51 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
 
-static int
-cell_is_free(int i, int j) {
-    if (game->map->grid[i][j] != '0')
-        return (0);
-    if (is_starting_cell(j, i))
-        return (0);
-    if (is_exit_cell(j, i))
-        return (0);
-    if (is_food_cell(j, i))
-        return (0);
-    if (is_trap_cell(j, i))
-        return (0);
-    return (1);
+static void
+insert_cell(t_point coords) {
+    t_cell *cell;
+
+    cell = (t_cell *) malloc(sizeof(t_cell));
+    cell->coords.x = coords.x;
+    cell->coords.y = coords.y;
+    cell->neighbours = cl_init_list();
+    cell->color = WHITE;
+    cell->parent = NULL;
+    cell->distance = -1;
+    cell->sprite_type = NONE;
+    cl_insert_begin(game->lair, cell);
+}
+
+static void
+init_lair(void) {
+    game->lair = cl_init_list();
+
+    // creating adjacency list
+    game->lair = cl_init_list();
+    // populating adjacency list
+    for (int i = 0; i < ROWS; i++)
+        for (int j = 0; j < COLS; j++)
+            if (strchr("0PE", game->map->grid[i][j]))
+                insert_cell((t_point){j, i});
+}
+
+static void
+build_lair() {
+    init_lair();
+    //  adding neighbours to each cell
+    cl_foreach(game->lair, add_neighbours);
+    setup_free_cells();
+    setup_food();
+    setup_traps();
 }
 
 static void
