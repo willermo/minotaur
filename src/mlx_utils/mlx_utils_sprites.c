@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 18:09:05 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 18:20:11 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 17:10:58 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,23 @@ get_pixel(t_image *img, t_point pos) {
 
 void
 apply_sprite_to_image(t_image *img, t_image *sprite, t_point pos) {
-    int i;
-    int j;
+    int row;
+    int col;
     int x;
     int y;
 
-    i = 0;
-    while (i < sprite->height) {
-        j = 0;
-        while (j < sprite->width) {
-            x = pos.x + j;
-            y = pos.y + i;
+    row = 0;
+    while (row < sprite->height) {
+        col = 0;
+        while (col < sprite->width) {
+            x = pos.x + col;
+            y = pos.y + row;
             if (x >= 0 && x < img->width && y >= 0 && y < img->height) {
                 draw_pixel(img, (t_point){x, y},
-                           get_pixel(sprite, (t_point){j, i}));
+                           get_pixel(sprite, (t_point){col, row}));
             }
-            j++;
+            col++;
         }
-        i++;
+        row++;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 20:03:28 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 16:33:57 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 17:14:02 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ offset_coords(t_point coords) {
     t_point offset;
 
     offset.x = coords.x * CELL_SIZE + (CELL_SIZE - SPRITES_SIZE) / 2;
-    offset.y = coords.y * CELL_SIZE + HEADER_H + (CELL_SIZE - SPRITES_SIZE) / 2;
+    offset.y = coords.y * CELL_SIZE + (CELL_SIZE - SPRITES_SIZE) / 2;
     return (offset);
 }
 
