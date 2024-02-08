@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:33:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 21:16:54 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 20:00:39 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #define COLLECTIBLES                   50
 #define TRAPS                          10
 #define TRAP_PENALTY                   5
+#define MINOTAUR_DAMAGE                200
 #define FOOTER_TEXT_COLOR              0x000000
 #define FOOTER_TEXT_BACKGROUND         0xFAFAFA
 #define STANDARD_FOOTER_BACKGROUND     0xFAFAFA

@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 16:42:20 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 19:42:35 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ insert_cell(t_point coords) {
 
 static void
 init_lair(void) {
-    game->lair = cl_init_list();
-
-    // creating adjacency list
     game->lair = cl_init_list();
     // populating adjacency list
     for (int i = 0; i < ROWS; i++)

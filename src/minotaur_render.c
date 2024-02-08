@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 15:45:58 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 20:24:59 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ static void
 draw_footer(t_image *img) {
     if (game->gamescene == INSTRUCTIONS)
         return (draw_background(img, INSTRUCTIONS_FOOTER_BACKGROUND, 0, 0));
-    draw_background(img, STANDARD_FOOTER_BACKGROUND, 0, 0);
-    if (game->gamescene == GAME)
-        mlx_string_put(game->display.mlx, game->display.win, FOOTER_TEXT_X,
-                       FOOTER_TEXT_Y, FOOTER_TEXT_COLOR, game->footer_text);
+    draw_background(img, FOOTER_TEXT_BACKGROUND, 0, 0);
 }
 
 static void
@@ -113,4 +110,7 @@ render_gamescreen(void) {
     refresh(HEADER, (t_point){HEADER_OFFSET_W, HEADER_OFFSET_H});
     refresh(SCENE, (t_point){SCENE_OFFSET_W, SCENE_OFFSET_H});
     refresh(FOOTER, (t_point){FOOTER_OFFSET_W, FOOTER_OFFSET_H});
+    if (game->gamescene == GAME && strlen(game->footer_text))
+        mlx_string_put(game->display.mlx, game->display.win, FOOTER_TEXT_X,
+                       FOOTER_TEXT_Y, FOOTER_TEXT_COLOR, game->footer_text);
 }

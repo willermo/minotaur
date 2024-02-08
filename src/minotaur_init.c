@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:17:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 16:38:41 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 19:36:36 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ init_map_parameters(void) {
     // set minotaur parameters
     game->minotaur->coords = game->map->end_pos;
     game->minotaur->is_trapped = 0;
+    memset(game->footer_text, 0, FOOTER_TEXT_BUFFER_SIZE);
 }
 
 static void

@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:16:37 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 13:56:49 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 20:08:16 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,15 @@ destroy_components(void) {
 static void
 destroy_sprites(void) {
     destroy_image(&game->display, game->sprites->food);
+    free(game->sprites->food);
     destroy_image(&game->display, game->sprites->trap);
+    free(game->sprites->trap);
     destroy_image(&game->display, game->sprites->active_trap);
+    free(game->sprites->active_trap);
     destroy_image(&game->display, game->sprites->player);
+    free(game->sprites->player);
     destroy_image(&game->display, game->sprites->minotaur);
+    free(game->sprites->minotaur);
 }
 
 static void

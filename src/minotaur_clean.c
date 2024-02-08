@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:35:57 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 13:57:44 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 20:09:51 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 static void
 destroy_items(void) {
-    cl_destroy_list(&game->collectibles->food);
-    cl_destroy_list(&game->collectibles->traps);
-    cl_destroy_list(&game->collectibles->active_traps);
-    cl_destroy_list(&game->collectibles->free_cells);
+    cl_dismiss_list(game->collectibles->food);
+    free(game->collectibles->food);
+    cl_dismiss_list(game->collectibles->traps);
+    free(game->collectibles->traps);
+    cl_dismiss_list(game->collectibles->active_traps);
+    free(game->collectibles->active_traps);
+    cl_dismiss_list(game->collectibles->free_cells);
+    free(game->collectibles->free_cells);
 }
 
 static void

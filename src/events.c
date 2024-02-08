@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 23:48:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 12:18:54 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 20:00:49 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ player_enters_minotaur_cell(t_cell *cell) {
     (void) cell;
     if (game->minotaur->is_trapped)
         return;
-    game->gamescene = LOSE;
-    render_gamescreen();
+    game->player->health -= MINOTAUR_DAMAGE;
 }
 
 void

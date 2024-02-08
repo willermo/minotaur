@@ -16,25 +16,16 @@ static void
 update_position(t_cell *from, t_cell *to) {
     game->player->coords = to->coords;
     game->player->health -= MOVEMENT_COST;
-    if (is_exit_cell(to)) {
-        game->gamescene = WIN;
-        render_gamescreen();
-        return;
-    }
-    if (is_minotaur_cell(to)) {
+    if (is_minotaur_cell(to))
         player_enters_minotaur_cell(to);
-    }
-    if (game->player->health <= 0) {
-        game->gamescene = LOSE;
-        render_gamescreen();
-        return;
-    }
-    if (is_food_cell(to)) {
+    if (is_food_cell(to))
         player_enters_food_cell(to);
-    }
-    if (is_trap_cell(to)) {
+    if (is_trap_cell(to))
         player_enters_trap_cell(to);
-    }
+    if (is_exit_cell(to))
+        game->gamescene = WIN;
+    if (game->player->health <= 0)
+        game->gamescene = LOSE;
     sprintf(game->footer_text, "Player moved from (%d, %d) to (%d, %d)",
             from->coords.y, from->coords.x, to->coords.y, to->coords.x);
     render_gamescreen();
