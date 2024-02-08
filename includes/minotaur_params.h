@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:33:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 20:00:39 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 21:22:12 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 #define INSTRUCTIONS_FOOTER_BACKGROUND 0xB84B19
 #define FREE_CELL_COLOR                0xb9ccb1
 #define WALL_CELL_COLOR                0x3b3b3b
-#define START_POSITION_COLOR           0x00FF00
-#define END_POSITION_COLOR             0xFF0000
+#define START_POSITION_COLOR           0xFF0000
+#define END_POSITION_COLOR             0x00FF00
 #define HP_FULL_COLOR                  0Xd60000
 #define HP_EMPTY_COLOR                 0x5c0000
 #define XPM_HEADER                     "./assets/images/header.xpm"
