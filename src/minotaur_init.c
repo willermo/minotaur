@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:17:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 19:36:36 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 21:06:39 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ allocate_data_structures_memory(void) {
 }
 
 static void
-init_map_parameters(void) {
+init_map_parameters(int random) {
     // set dimensions
     game->map->width = COLS;
     game->map->height = ROWS;
@@ -52,17 +52,18 @@ init_map_parameters(void) {
     game->minotaur->coords = game->map->end_pos;
     game->minotaur->is_trapped = 0;
     memset(game->footer_text, 0, FOOTER_TEXT_BUFFER_SIZE);
+    game->randomize_positions = random;
 }
 
 static void
-init_game_structures(void) {
+init_game_structures(int random) {
     allocate_data_structures_memory();
     init_items();
-    init_map_parameters();
+    init_map_parameters(random);
 }
 
 void
-init_game(void) {
-    init_game_structures();
+init_game(int random) {
+    init_game_structures(random);
     setup_lair();
 }
