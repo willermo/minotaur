@@ -134,6 +134,7 @@ typedef struct s_game {
     t_minotaur *minotaur;
     char footer_text[FOOTER_TEXT_BUFFER_SIZE];
     t_gamescene gamescene;
+    int randomize_positions;
 } t_game;
 
 extern t_game *game;
@@ -167,7 +168,7 @@ int compare_coords(void *coord1, void *coord2);
 
 // MAIN ROUTINE SECTION
 // defined in minotaur_init.c
-void init_game(void);
+void init_game(int random);
 // defined in minotaur_start.c
 void start_game(void);
 // defined in minotaur_end.c

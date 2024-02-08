@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 19:42:35 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 21:14:09 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,34 @@ init_lair(void) {
 }
 
 static void
+randomize_positions() {
+    t_cl_list *node;
+
+    // randomize minotaur position
+    node = cl_get_node_by_position(
+        game->collectibles->free_cells,
+        rand() % cl_size(game->collectibles->free_cells) + 1);
+    game->minotaur->coords = ((t_cell *) node->data)->coords;
+    // randomize player position
+    node = cl_get_node_by_position(
+        game->collectibles->free_cells,
+        rand() % cl_size(game->collectibles->free_cells) + 1);
+    while (is_minotaur_cell((t_cell *) node->data))
+        node = cl_get_node_by_position(
+            game->collectibles->free_cells,
+            rand() % cl_size(game->collectibles->free_cells) + 1);
+    game->player->coords = ((t_cell *) node->data)->coords;
+}
+
+static void
 build_lair() {
     init_lair();
     cl_foreach(game->lair, add_neighbours);
     setup_free_cells();
     setup_food();
     setup_traps();
+    if (game->randomize_positions)
+        randomize_positions();
 }
 
 static void
