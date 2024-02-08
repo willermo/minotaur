@@ -6,14 +6,14 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:16:37 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 22:40:50 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 13:56:49 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
 
 static void
-destroy_graphics(void) {
+destroy_components(void) {
     destroy_image(&game->display, game->components->header);
     free(game->components->header);
     game->components->header = NULL;
@@ -25,12 +25,24 @@ destroy_graphics(void) {
     game->components->footer = NULL;
 }
 
+static void
+destroy_sprites(void) {
+    destroy_image(&game->display, game->sprites->food);
+    destroy_image(&game->display, game->sprites->trap);
+    destroy_image(&game->display, game->sprites->active_trap);
+    destroy_image(&game->display, game->sprites->player);
+    destroy_image(&game->display, game->sprites->minotaur);
+}
+
+static void
+destroy_graphics(void) {
+    destroy_components();
+    destroy_sprites();
+}
+
 void
 end_game(void) {
     destroy_graphics();
     destroy_lair();
-    mlx_clear_window(game->display.mlx, game->display.win);
-    mlx_destroy_window(game->display.mlx, game->display.win);
-    mlx_destroy_display(game->display.mlx);
-    free(game->display.mlx);
+    shutdown_system(&game->display);
 }

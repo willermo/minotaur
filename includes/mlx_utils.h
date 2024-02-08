@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:09:07 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 18:20:25 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 11:33:15 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef int t_rgba;
 typedef unsigned char t_rgb_c;
 // defned in mlx_helpers.c
 void init_system(t_display *display, int width, int height, char *title);
+void shutdown_system(t_display *display);
 int get_endianness(void);
 // defined in mlx_image.c
 t_image *create_image(t_display *display, int width, int height);

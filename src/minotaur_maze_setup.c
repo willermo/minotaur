@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 19:57:51 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 16:42:20 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ insert_cell(t_point coords) {
     t_cell *cell;
 
     cell = (t_cell *) malloc(sizeof(t_cell));
-    cell->coords.x = coords.x;
-    cell->coords.y = coords.y;
+    cell->coords = coords;
     cell->neighbours = cl_init_list();
     cell->color = WHITE;
     cell->parent = NULL;
@@ -43,7 +42,6 @@ init_lair(void) {
 static void
 build_lair() {
     init_lair();
-    //  adding neighbours to each cell
     cl_foreach(game->lair, add_neighbours);
     setup_free_cells();
     setup_food();

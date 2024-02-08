@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:17:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 22:31:44 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 16:38:41 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,6 @@ init_items() {
     game->collectibles->food = cl_init_list();
     game->collectibles->traps = cl_init_list();
     game->collectibles->active_traps = cl_init_list();
-}
-
-static void
-init_sprites() {
-    game->sprites->food =
-        load_xpm_image(game->display.mlx, "./assets/sprites/food.xpm");
-    game->sprites->trap =
-        load_xpm_image(game->display.mlx, "./assets/sprites/trap.xpm");
-    game->sprites->active_trap =
-        load_xpm_image(game->display.mlx, "./assets/sprites/active_trap.xpm");
-    game->sprites->player =
-        load_xpm_image(game->display.mlx, "./assets/sprites/player.xpm");
-    game->sprites->minotaur =
-        load_xpm_image(game->display.mlx, "./assets/sprites/minotaur.xpm");
 }
 
 static void
@@ -59,13 +45,11 @@ init_map_parameters(void) {
     game->map->end_pos.x = COLS - 2;
     game->map->end_pos.y = 0;
     // set player parameters
-    game->player->coords.x = game->map->start_pos.x;
-    game->player->coords.y = game->map->start_pos.y;
+    game->player->coords = game->map->start_pos;
     game->player->health = PLAYER_START_HP_POINTS;
     game->player->has_trap = 1;
     // set minotaur parameters
-    game->minotaur->coords.x = game->map->end_pos.x;
-    game->minotaur->coords.y = game->map->end_pos.y;
+    game->minotaur->coords = game->map->end_pos;
     game->minotaur->is_trapped = 0;
 }
 
@@ -73,7 +57,6 @@ static void
 init_game_structures(void) {
     allocate_data_structures_memory();
     init_items();
-    init_sprites();
     init_map_parameters();
 }
 

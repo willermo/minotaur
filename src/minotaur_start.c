@@ -6,22 +6,34 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:03:26 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 22:34:34 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 16:15:40 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
 
 static void
-init_graphics(void) {
+init_sprites() {
+    game->sprites->food = load_xpm_image(&game->display, XPM_FOOD);
+    game->sprites->trap = load_xpm_image(&game->display, XPM_TRAP_COLLECTIBLE);
+    game->sprites->active_trap =
+        load_xpm_image(&game->display, XPM_TRAP_ACTIVE);
+    game->sprites->player = load_xpm_image(&game->display, XPM_EXPLORER);
+    game->sprites->minotaur = load_xpm_image(&game->display, XPM_MINOTAUR);
+}
+
+static void
+init_components() {
     game->components->screen = NULL;
     game->components->header = NULL;
     game->components->scene = NULL;
     game->components->footer = NULL;
-    game->components->refresh = NULL;
-    // game->player_image = NULL;
-    // game->minotaur_image = NULL;
-    game->footer_text = NULL;
+}
+
+static void
+init_graphics(void) {
+    init_components();
+    init_sprites();
 }
 
 static void

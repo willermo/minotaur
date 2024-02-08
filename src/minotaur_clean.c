@@ -6,24 +6,11 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:35:57 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 22:32:48 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 13:57:44 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
-
-static void
-destroy_sprites(void) {
-    destroy_image(&game->display, game->sprites->food);
-    destroy_image(&game->display, game->sprites->trap);
-    destroy_image(&game->display, game->sprites->active_trap);
-    destroy_image(&game->display, game->sprites->player);
-    destroy_image(&game->display, game->sprites->minotaur);
-    if (game->footer_text) {
-        free(game->footer_text);
-        game->footer_text = NULL;
-    }
-}
 
 static void
 destroy_items(void) {
@@ -50,7 +37,6 @@ free_data_structures_memory(void) {
 
 void
 clean_game(void) {
-    destroy_sprites();
     destroy_items();
     free_data_structures_memory();
 }

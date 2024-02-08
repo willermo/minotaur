@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 21:03:29 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/07 23:57:40 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 16:13:01 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 t_cell *
 get_cell_from_coords(t_point coord) {
     t_cell cell;
+    t_cl_list *node;
 
-    cell.coords.x = coord.x;
-    cell.coords.y = coord.y;
-    return (cl_get_node_by_data(game->lair, &cell, compare_lair_cells)->data);
+    cell.coords = coord;
+    if ((node = cl_get_node_by_data(game->lair, &cell, compare_lair_cells)))
+        return ((t_cell *) node->data);
+    return (NULL);
 }
 
 t_cell *

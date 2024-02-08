@@ -115,7 +115,6 @@ typedef struct s_components {
     t_image *header;
     t_image *scene;
     t_image *footer;
-    t_image *refresh;
 } t_components;
 
 // typedef struct s_characters {
@@ -132,7 +131,7 @@ typedef struct s_game {
     t_cl_list *lair;
     t_player *player;
     t_minotaur *minotaur;
-    char *footer_text;
+    char footer_text[100];
     t_gamescene gamescene;
 } t_game;
 
@@ -177,7 +176,7 @@ void clean_game(void);
 
 // MAZE MANAGEMENT SECTION
 // defined in minotaur_maze_setup.c
-void init_lair();
+void setup_lair();
 void refresh_lair();
 // defined in minotaur_maze_setup_neighbours.c
 void add_neighbours(void *cell);
@@ -207,19 +206,21 @@ void draw_active_traps(t_image *board);
 void draw_collectibles(t_image *board);
 void draw_player(t_image *board);
 void draw_minotaur(t_image *board);
-
+// defined in minotaur_render_draw_gamescene.c
+void draw_board(t_image *img);
+void draw_gamescene(t_image *img);
 // GAMEPLAY SECTION
 // defined in actions.c
-void set_trap(void);
+void set_trap();
 void move(t_movement direction);
-// defined in minotaur_mino.c
-t_cell *get_nearest_to_player_cell();
-t_point get_nearest_to_player_cell_coordinate();
+// defined in minotaur_move.c
 void minotaur_move();
 // defined in events.c
+void player_sets_trap();
 void player_enters_food_cell(t_cell *cell);
 void player_enters_trap_cell(t_cell *cell);
 void player_enters_minotaur_cell(t_cell *cell);
 void player_enters_exit_cell(t_cell *cell);
-void minotaur_enters_active_trap_celll(t_cell *cell);
+void minotaur_enters_player_cell();
+void minotaur_enters_active_trap_cell(t_cell *cell);
 #endif

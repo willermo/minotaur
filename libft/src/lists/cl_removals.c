@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 12:54:15 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 16:11:35 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 11:37:59 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,10 @@ cl_remove_node_by_data(t_cl_list *head, void *data,
         temp = temp->next;
     }
     return (NULL);
+}
+
+void
+cl_dismiss_list(t_cl_list *head) {
+    while (cl_size(head))
+        free(cl_remove_begin(head));
 }
