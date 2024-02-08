@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:17:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 23:07:14 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 19:36:36 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,10 @@
 
 static void
 init_items() {
-    game->map->collectibles = cl_init_list();
-    game->map->traps = cl_init_list();
-    game->map->active_traps = cl_init_list();
-    game->map->free_cells = cl_init_list();
-}
-
-static void
-init_sprites() {
-    game->collectibles_images = cl_init_list();
-    game->traps_images = cl_init_list();
-    game->active_traps_images = cl_init_list();
+    game->collectibles->free_cells = cl_init_list();
+    game->collectibles->food = cl_init_list();
+    game->collectibles->traps = cl_init_list();
+    game->collectibles->active_traps = cl_init_list();
 }
 
 static void
@@ -36,6 +29,9 @@ allocate_data_structures_memory(void) {
     game->map->grid = (char **) malloc(sizeof(char *) * ROWS);
     for (int i = 0; i < ROWS; i++)
         game->map->grid[i] = (char *) malloc(sizeof(char) * COLS);
+    game->sprites = (t_sprites *) malloc(sizeof(t_sprites));
+    game->collectibles = (t_collectibles *) malloc(sizeof(t_collectibles));
+    game->components = (t_components *) malloc(sizeof(t_components));
 }
 
 static void
@@ -44,31 +40,29 @@ init_map_parameters(void) {
     game->map->width = COLS;
     game->map->height = ROWS;
     // set enter and exit positions
-    game->map->start_pos[0] = 1;
-    game->map->start_pos[1] = ROWS - 1;
-    game->map->end_pos[0] = COLS - 2;
-    game->map->end_pos[1] = 0;
+    game->map->start_pos.x = 1;
+    game->map->start_pos.y = ROWS - 1;
+    game->map->end_pos.x = COLS - 2;
+    game->map->end_pos.y = 0;
     // set player parameters
-    game->player->x = game->map->start_pos[0];
-    game->player->y = game->map->start_pos[1];
+    game->player->coords = game->map->start_pos;
     game->player->health = PLAYER_START_HP_POINTS;
     game->player->has_trap = 1;
     // set minotaur parameters
-    game->minotaur->x = game->map->end_pos[0];
-    game->minotaur->y = game->map->end_pos[1];
+    game->minotaur->coords = game->map->end_pos;
     game->minotaur->is_trapped = 0;
+    memset(game->footer_text, 0, FOOTER_TEXT_BUFFER_SIZE);
 }
 
 static void
 init_game_structures(void) {
     allocate_data_structures_memory();
     init_items();
-    init_sprites();
     init_map_parameters();
 }
 
 void
 init_game(void) {
     init_game_structures();
-    init_lair();
+    setup_lair();
 }

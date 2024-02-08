@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minotaur_maze_graph.c                              :+:      :+:    :+:   */
+/*   minotaur_maze_setup_neighbours.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/04 10:53:56 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 12:17:38 by doriani          ###   ########.fr       */
+/*   Created: 2024/02/07 19:22:40 by doriani           #+#    #+#             */
+/*   Updated: 2024/02/07 19:23:10 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,69 +33,11 @@ get_neighbour(t_point coords) {
     return (neighbour);
 }
 
-static void
+void
 add_neighbours(void *cell) {
     t_cell *c = (t_cell *) cell;
     add_neighbour(c, get_neighbour((t_point){c->coords.x - 1, c->coords.y}));
     add_neighbour(c, get_neighbour((t_point){c->coords.x + 1, c->coords.y}));
     add_neighbour(c, get_neighbour((t_point){c->coords.x, c->coords.y - 1}));
     add_neighbour(c, get_neighbour((t_point){c->coords.x, c->coords.y + 1}));
-}
-
-static void
-insert_cell(t_point coords) {
-    t_cell *cell;
-
-    cell = (t_cell *) malloc(sizeof(t_cell));
-    cell->coords.x = coords.x;
-    cell->coords.y = coords.y;
-    cell->neighbours = cl_init_list();
-    cell->color = WHITE;
-    cell->parent = NULL;
-    cell->distance = -1;
-    cl_insert_begin(game->lair, cell);
-}
-
-void
-reset_cell_metadata(void *cell) {
-    t_cell *c = (t_cell *) cell;
-
-    c->color = WHITE;
-    c->parent = NULL;
-    c->distance = -1;
-}
-
-void
-build_lair() {
-    // creating adjacency list
-    game->lair = cl_init_list();
-    // populating adjacency list
-    for (int i = 0; i < ROWS; i++)
-        for (int j = 0; j < COLS; j++)
-            if (strchr("0PE", game->map->grid[i][j]))
-                insert_cell((t_point){j, i});
-    //  adding neighbours to each cell
-    cl_foreach(game->lair, add_neighbours);
-}
-
-static void
-clear_neighbours(void *cell) {
-    t_cell *c = (t_cell *) cell;
-
-    // cl_foreach(c->neighbours, free);
-    while (cl_size(c->neighbours)) {
-        free(cl_remove_begin(c->neighbours));
-    }
-}
-
-static void
-clear_cell(void *cell) {
-    free(((t_cell *) cell)->neighbours);
-}
-
-void
-destroy_lair() {
-    cl_foreach(game->lair, clear_neighbours);
-    cl_foreach(game->lair, clear_cell);
-    cl_destroy_list(&game->lair);
 }

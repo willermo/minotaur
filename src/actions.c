@@ -12,115 +12,58 @@
 
 #include "minotaur.h"
 
-static int
-player_eats_food(int col, int row) {
-    t_point *cell;
-
-    if ((cell = is_food_cell(col, row))) {
-        cl_add_node_end(game->map->free_cells,
-                        cl_remove_node_by_data(game->map->collectibles, cell,
-                                               compare_map_cells));
-        return (1);
-    }
-    return 0;
-}
-
-static int
-player_gets_trap(int col, int row) {
-    t_point *cell;
-
-    if ((cell = is_trap_cell(col, row))) {
-        cl_add_node_end(
-            game->map->free_cells,
-            cl_remove_node_by_data(game->map->traps, cell, compare_map_cells));
-        return (1);
-    }
-    return 0;
+static void
+update_position(t_cell *from, t_cell *to) {
+    game->player->coords = to->coords;
+    game->player->health -= MOVEMENT_COST;
+    if (is_minotaur_cell(to))
+        player_enters_minotaur_cell(to);
+    if (is_food_cell(to))
+        player_enters_food_cell(to);
+    if (is_trap_cell(to))
+        player_enters_trap_cell(to);
+    if (is_exit_cell(to))
+        game->gamescene = WIN;
+    if (game->player->health <= 0)
+        game->gamescene = LOSE;
+    sprintf(game->footer_text, "Player moved from (%d, %d) to (%d, %d)",
+            from->coords.y, from->coords.x, to->coords.y, to->coords.x);
+    render_gamescreen();
+    minotaur_move();
 }
 
 void
 set_trap() {
-    char str[100];
-    t_point cell;
-
-    cell.x = game->player->x;
-    cell.y = game->player->y;
-
-    cl_add_node_end(game->map->active_traps,
-                    cl_remove_node_by_data(game->map->free_cells, &cell,
-                                           compare_map_cells));
-
-    game->player->has_trap = 0;
-    sprintf(str, "Trap set at (%d, %d)", game->player->x, game->player->y);
-    if (game->footer_text)
-        free(game->footer_text);
-    game->footer_text = strdup(str);
-    render_gamescreen();
-    minotaur_move();
-}
-
-static int
-player_hit_minotaur() {
-    return (game->player->x == game->minotaur->x &&
-            game->player->y == game->minotaur->y);
-}
-
-static void
-update_position(int old_col, int old_row, int new_col, int new_row) {
-    char str[100];
-    if (is_exit_cell(new_col, new_row)) {
-        game->gamescene = WIN;
-        render_gamescreen();
-        return;
-    }
-    game->player->x = new_col;
-    game->player->y = new_row;
-    if (!game->minotaur->is_trapped && player_hit_minotaur()) {
-        game->gamescene = LOSE;
-        render_gamescreen();
-        return;
-    }
-    sprintf(str, "Player moved from (%d, %d) to (%d, %d)", old_col, old_row,
-            new_col, new_row);
-    if (game->footer_text)
-        free(game->footer_text);
-    game->footer_text = strdup(str);
-    game->player->health -= MOVEMENT_COST;
-    if (game->player->has_trap == 0 && player_gets_trap(new_col, new_row))
-        game->player->has_trap = 1;
-    if (player_eats_food(new_col, new_row))
-        game->player->health =
-            ft_min(game->player->health + FOOD_RESTORE, PLAYER_MAX_HP_POINTS);
-    if (!game->player->has_trap && player_gets_trap(new_col, new_row))
-        game->player->has_trap = 1;
-    if (game->player->health <= 0)
-        game->gamescene = LOSE;
-    render_gamescreen();
-    minotaur_move();
+    if (game->player->has_trap)
+        player_sets_trap();
 }
 
 void
 move(t_movement direction) {
-    char **grid = game->map->grid;
-    int col = game->player->x;
-    int row = game->player->y;
+    t_cell *from;
+    t_cell *to;
 
+    from = get_cell_from_coords(game->player->coords);
     switch (direction) {
     case UP:
-        if (row > 0 && strchr("0EP", grid[row - 1][col]))
-            update_position(col, row, col, row - 1);
+        to = get_cell_from_coords(
+            (t_point){game->player->coords.x, game->player->coords.y - 1});
         break;
     case DOWN:
-        if (row < ROWS - 1 && strchr("0EP", grid[row + 1][col]))
-            update_position(col, row, col, row + 1);
+        to = get_cell_from_coords(
+            (t_point){game->player->coords.x, game->player->coords.y + 1});
         break;
     case LEFT:
-        if (col > 0 && strchr("0EP", grid[row][col - 1]))
-            update_position(col, row, col - 1, row);
+        to = get_cell_from_coords(
+            (t_point){game->player->coords.x - 1, game->player->coords.y});
         break;
     case RIGHT:
-        if (col < COLS - 1 && strchr("0EP", grid[row][col + 1]))
-            update_position(col, row, col + 1, row);
+        to = get_cell_from_coords(
+            (t_point){game->player->coords.x + 1, game->player->coords.y});
         break;
     }
+    if (!to)
+        return;
+    // todo: catch and bind events
+    update_position(from, to);
 }

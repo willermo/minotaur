@@ -6,44 +6,48 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:16:37 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 11:46:42 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 20:08:16 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
 
 static void
+destroy_components(void) {
+    destroy_image(&game->display, game->components->header);
+    free(game->components->header);
+    game->components->header = NULL;
+    destroy_image(&game->display, game->components->scene);
+    free(game->components->scene);
+    game->components->scene = NULL;
+    destroy_image(&game->display, game->components->footer);
+    free(game->components->footer);
+    game->components->footer = NULL;
+}
+
+static void
+destroy_sprites(void) {
+    destroy_image(&game->display, game->sprites->food);
+    free(game->sprites->food);
+    destroy_image(&game->display, game->sprites->trap);
+    free(game->sprites->trap);
+    destroy_image(&game->display, game->sprites->active_trap);
+    free(game->sprites->active_trap);
+    destroy_image(&game->display, game->sprites->player);
+    free(game->sprites->player);
+    destroy_image(&game->display, game->sprites->minotaur);
+    free(game->sprites->minotaur);
+}
+
+static void
 destroy_graphics(void) {
-    destroy_image(&game->display, game->header);
-    free(game->header);
-    game->header = NULL;
-    destroy_image(&game->display, game->scene);
-    free(game->scene);
-    game->scene = NULL;
-    destroy_image(&game->display, game->footer);
-    free(game->footer);
-    game->footer = NULL;
-    if (game->player_image) {
-        destroy_image(&game->display, game->player_image);
-        free(game->player_image);
-        game->player_image = NULL;
-    }
-    if (game->minotaur_image) {
-        destroy_image(&game->display, game->minotaur_image);
-        free(game->minotaur_image);
-        game->minotaur_image = NULL;
-    }
-    destroy_collectibles();
-    destroy_traps();
-    destroy_active_traps();
+    destroy_components();
+    destroy_sprites();
 }
 
 void
 end_game(void) {
     destroy_graphics();
     destroy_lair();
-    mlx_clear_window(game->display.mlx, game->display.win);
-    mlx_destroy_window(game->display.mlx, game->display.win);
-    mlx_destroy_display(game->display.mlx);
-    free(game->display.mlx);
+    shutdown_system(&game->display);
 }

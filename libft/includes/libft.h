@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 10:47:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 16:12:12 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 11:38:34 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,7 @@ t_cl_list *cl_remove_end(t_cl_list *head);
 t_cl_list *cl_remove_node_by_position(t_cl_list *head, int pos);
 t_cl_list *cl_remove_node_by_data(t_cl_list *head, void *data,
                                   int(cmp_data)(void *, void *));
+void cl_dismiss_list(t_cl_list *head);
 // defined in cl_deletions.c
 void cl_delete_begin(t_cl_list *head);
 void cl_delete_end(t_cl_list *head);

@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:10:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/05 00:41:09 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/07 23:39:02 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,15 @@ visit_neighbours(t_cell *source, t_cl_list *queue) {
         neighbour = neighbour->next;
     }
     source->color = BLACK;
+}
+
+static void
+reset_cell_metadata(void *cell) {
+    t_cell *c = (t_cell *) cell;
+
+    c->color = WHITE;
+    c->parent = NULL;
+    c->distance = -1;
 }
 
 // BFS algorithm to find the shortest path from the start to the end of the maze

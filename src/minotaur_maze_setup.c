@@ -6,63 +6,43 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/06 14:28:50 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/08 19:42:35 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minotaur.h"
 
-static int
-cell_is_free(int i, int j) {
-    if (game->map->grid[i][j] != '0')
-        return (0);
-    if (is_starting_cell(j, i))
-        return (0);
-    if (is_exit_cell(j, i))
-        return (0);
-    if (is_food_cell(j, i))
-        return (0);
-    if (is_trap_cell(j, i))
-        return (0);
-    return (1);
+static void
+insert_cell(t_point coords) {
+    t_cell *cell;
+
+    cell = (t_cell *) malloc(sizeof(t_cell));
+    cell->coords = coords;
+    cell->neighbours = cl_init_list();
+    cell->color = WHITE;
+    cell->parent = NULL;
+    cell->distance = -1;
+    cell->sprite_type = NONE;
+    cl_insert_begin(game->lair, cell);
 }
 
 static void
-update_free_cells() {
-    t_point *cell;
-
-    cl_delete_list(game->map->free_cells);
+init_lair(void) {
+    game->lair = cl_init_list();
+    // populating adjacency list
     for (int i = 0; i < ROWS; i++)
         for (int j = 0; j < COLS; j++)
-            if (cell_is_free(i, j)) {
-                cell = (t_point *) malloc(sizeof(t_point));
-                cell->x = j;
-                cell->y = i;
-                cl_insert_end(game->map->free_cells, cell);
-            }
+            if (strchr("0PE", game->map->grid[i][j]))
+                insert_cell((t_point){j, i});
 }
 
 static void
-setup_food() {
-    int free_cells_count;
-
-    free_cells_count = cl_size(game->map->free_cells);
-    for (int i = 0; i < COLLECTIBLES; i++)
-        cl_add_node_end(
-            game->map->collectibles,
-            cl_remove_node_by_position(game->map->free_cells,
-                                       rand() % free_cells_count--));
-}
-
-static void
-setup_traps() {
-    int free_cells_count;
-
-    free_cells_count = cl_size(game->map->free_cells);
-    for (int i = 0; i < TRAPS; i++)
-        cl_add_node_end(game->map->traps, cl_remove_node_by_position(
-                                              game->map->free_cells,
-                                              rand() % free_cells_count--));
+build_lair() {
+    init_lair();
+    cl_foreach(game->lair, add_neighbours);
+    setup_free_cells();
+    setup_food();
+    setup_traps();
 }
 
 static void
@@ -89,14 +69,11 @@ initialize_maze() {
 }
 
 void
-init_lair() {
+setup_lair() {
     initialize_maze();
     if (VERBOSE)
         print_maze(game->map->grid);
     build_lair();
-    update_free_cells();
-    setup_food();
-    setup_traps();
 }
 
 void
