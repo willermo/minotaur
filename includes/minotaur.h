@@ -48,12 +48,13 @@
 #define FOOTER_TEXT_BUFFER_SIZE 100
 #define ROWS                    50
 #define COLS                    36
-#define CELL_SIZE               SCENE_W / COLS
-#define SPRITES_SIZE            18
-#define HP_OFFSET_X             295
-#define HP_OFFSET_Y             39
-#define STATS_BAR_LENGTH        400
-#define STATS_BAR_HEIGHT        50
+#define CELL_SIZE                                                              \
+    ((SCENE_W / COLS) < (SCENE_H / ROWS) ? (SCENE_W / COLS) : (SCENE_H / ROWS))
+#define SPRITES_SIZE     (CELL_SIZE - 4)
+#define HP_OFFSET_X      295
+#define HP_OFFSET_Y      39
+#define STATS_BAR_LENGTH 400
+#define STATS_BAR_HEIGHT 50
 
 typedef enum e_component { SCREEN, HEADER, SCENE, FOOTER } t_component;
 

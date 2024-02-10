@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:03:26 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 16:15:40 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 14:13:29 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,21 @@
 static void
 init_sprites() {
     game->sprites->food = load_xpm_image(&game->display, XPM_FOOD);
+    rescale_image(&game->display, game->sprites->food, SPRITES_SIZE,
+                  SPRITES_SIZE, BICUBIC);
     game->sprites->trap = load_xpm_image(&game->display, XPM_TRAP_COLLECTIBLE);
+    rescale_image(&game->display, game->sprites->trap, SPRITES_SIZE,
+                  SPRITES_SIZE, BICUBIC);
     game->sprites->active_trap =
         load_xpm_image(&game->display, XPM_TRAP_ACTIVE);
+    rescale_image(&game->display, game->sprites->active_trap, SPRITES_SIZE,
+                  SPRITES_SIZE, BICUBIC);
     game->sprites->player = load_xpm_image(&game->display, XPM_EXPLORER);
+    rescale_image(&game->display, game->sprites->player, SPRITES_SIZE,
+                  SPRITES_SIZE, BICUBIC);
     game->sprites->minotaur = load_xpm_image(&game->display, XPM_MINOTAUR);
+    rescale_image(&game->display, game->sprites->minotaur, SPRITES_SIZE,
+                  SPRITES_SIZE, BICUBIC);
 }
 
 static void

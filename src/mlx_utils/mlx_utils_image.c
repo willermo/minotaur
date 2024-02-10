@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:16:44 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/10 11:04:10 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 14:04:44 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,21 @@
 #include <stdlib.h>
 
 void
-substitute_images(t_image *dst, t_image *src) {
-    dst->img = src->img;
-    dst->addr = src->addr;
-    dst->width = src->width;
-    dst->height = src->height;
-    dst->bits_per_pixel = src->bits_per_pixel;
-    dst->line_length = src->line_length;
-    dst->endian = src->endian;
+overwrite_image(t_image *to, t_image *from) {
+    to->img = from->img;
+    to->addr = from->addr;
+    to->width = from->width;
+    to->height = from->height;
+    to->bits_per_pixel = from->bits_per_pixel;
+    to->line_length = from->line_length;
+    to->endian = from->endian;
+}
+
+t_image *
+clone_image(t_display *display, t_image *src) {
+    t_image *clone = create_image(display, src->width, src->height);
+    apply_sprite_to_image(clone, src, (t_point){0, 0});
+    return (clone);
 }
 
 t_image *

@@ -6,11 +6,12 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 10:40:03 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/10 12:35:37 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:40:51 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx_utils.h"
+#include <stdio.h>
 #include <stdlib.h>
 #define EPSILON 0.0001f
 
@@ -33,7 +34,7 @@ bicubic_interpolate(float pixels[4][4], float x, float y) {
     return cubic_interpolate(arr, x);
 }
 
-void
+static void
 interpolate_pixels_bicubic(t_image *src, t_image *dst, int x, int y) {
     float src_x = ((float) x * src->width) / dst->width;
     float src_y = ((float) y * src->height) / dst->height;
@@ -59,7 +60,7 @@ interpolate_pixels_bicubic(t_image *src, t_image *dst, int x, int y) {
     *(int *) (dst->addr + (y * dst->line_length + x * 4)) = interpolated;
 }
 
-void
+static void
 interpolate_pixels_bilinear(t_image *src, t_image *dst, int x, int y) {
     float src_x = ((float) x * src->width) / dst->width;
     float src_y = ((float) y * src->height) / dst->height;
@@ -83,7 +84,7 @@ interpolate_pixels_bilinear(t_image *src, t_image *dst, int x, int y) {
     *(int *) (dst->addr + (y * dst->line_length + x * 4)) = interpolated;
 }
 
-void
+static void
 interpolate_pixels_nearest_neighbour(t_image *src, t_image *dst, int x, int y) {
     int src_x;
     int src_y;
@@ -120,6 +121,16 @@ rescale_image(t_display *display, t_image *image, int width, int height,
                 break;
             }
     destroy_image(display, image);
-    substitute_images(image, rescaled);
+    overwrite_image(image, rescaled);
     free(rescaled);
+}
+
+t_image *
+get_rescaled_image(t_display *display, t_image *image, int width, int height,
+                   t_rescale_algorithm method) {
+    t_image *rescaled;
+
+    rescaled = clone_image(display, image);
+    rescale_image(display, rescaled, width, height, method);
+    return (rescaled);
 }

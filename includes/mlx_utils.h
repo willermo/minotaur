@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:09:07 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/10 12:34:50 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 13:53:26 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void init_system(t_display *display, int width, int height, char *title);
 void shutdown_system(t_display *display);
 int get_endianness(void);
 // defined in mlx_image.c
-void substitute_images(t_image *dst, t_image *src);
+void overwrite_image(t_image *to, t_image *from);
+t_image *clone_image(t_display *display, t_image *src);
 t_image *create_image(t_display *display, int width, int height);
 t_image *load_xpm_image(t_display *display, char *path);
 void add_image(t_display *display, t_image *img, t_point p);
@@ -74,10 +75,8 @@ int blend(int src, int dst, double alpha);
 // defined in mlx_utils_sprites.c
 void apply_sprite_to_image(t_image *img, t_image *sprite, t_point pos);
 // defined in mlx_utils_images_scaling.c
-void interpolate_pixels_bicubic(t_image *src, t_image *dst, int x, int y);
-void interpolate_pixels_bilinear(t_image *src, t_image *dst, int x, int y);
-void interpolate_pixels_nearest_neighbour(t_image *src, t_image *dst, int x,
-                                          int y);
 void rescale_image(t_display *display, t_image *image, int width, int height,
                    t_rescale_algorithm method);
+t_image *get_rescaled_image(t_display *display, t_image *image, int width,
+                            int height, t_rescale_algorithm method);
 #endif
