@@ -160,6 +160,7 @@ int is_player_cell(t_cell *cell);
 int is_minotaur_cell(t_cell *cell);
 int is_walkable_cell(t_point coords);
 int is_valid_coords(t_point coords);
+int is_player_dead();
 char **clone_grid(char **grid);
 int compare_lair_cells(void *cell1, void *cell2);
 int compare_coords(void *coord1, void *coord2);
@@ -223,6 +224,7 @@ void player_enters_food_cell(t_cell *cell);
 void player_enters_trap_cell(t_cell *cell);
 void player_enters_minotaur_cell(t_cell *cell);
 void player_enters_exit_cell(t_cell *cell);
+void player_dies();
 void minotaur_enters_player_cell();
 void minotaur_enters_active_trap_cell(t_cell *cell);
 #endif

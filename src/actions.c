@@ -13,29 +13,40 @@
 #include "minotaur.h"
 
 static void
+trigger_suitable_events(t_cell *landing_cell) {
+    if (is_minotaur_cell(landing_cell))
+        player_enters_minotaur_cell(landing_cell);
+    if (is_food_cell(landing_cell))
+        player_enters_food_cell(landing_cell);
+    if (is_trap_cell(landing_cell))
+        player_enters_trap_cell(landing_cell);
+    if (is_exit_cell(landing_cell))
+        player_enters_exit_cell(landing_cell);
+    if (is_player_dead())
+        player_dies();
+}
+
+static void
 update_position(t_cell *from, t_cell *to) {
     game->player->coords = to->coords;
     game->player->health -= MOVEMENT_COST;
-    if (is_minotaur_cell(to))
-        player_enters_minotaur_cell(to);
-    if (is_food_cell(to))
-        player_enters_food_cell(to);
-    if (is_trap_cell(to))
-        player_enters_trap_cell(to);
-    if (is_exit_cell(to))
-        game->gamescene = WIN;
-    if (game->player->health <= 0)
-        game->gamescene = LOSE;
+    trigger_suitable_events(to);
     sprintf(game->footer_text, "Player moved from (%d, %d) to (%d, %d)",
             from->coords.y, from->coords.x, to->coords.y, to->coords.x);
     render_gamescreen();
-    minotaur_move();
+    if (game->gamescene == GAME && !is_player_dead())
+        minotaur_move();
 }
 
 void
 set_trap() {
-    if (game->player->has_trap)
-        player_sets_trap();
+    if (!game->player->has_trap)
+        return;
+    player_sets_trap();
+    sprintf(game->footer_text, "Trap set at (%d, %d)", game->player->coords.x,
+            game->player->coords.y);
+    render_gamescreen();
+    minotaur_move();
 }
 
 void

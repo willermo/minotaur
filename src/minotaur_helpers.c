@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 21:03:29 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 16:13:01 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 09:48:22 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,11 @@ int
 is_valid_coords(t_point coords) {
     return (coords.x >= 0 && coords.x < COLS && coords.y >= 0 &&
             coords.y < ROWS);
+}
+
+int
+is_player_dead() {
+    return (game->player->health <= 0);
 }
 
 char **

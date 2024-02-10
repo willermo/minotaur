@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 23:48:49 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 20:00:49 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 10:06:38 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@ player_sets_trap() {
                         cl_remove_node_by_data(game->collectibles->free_cells,
                                                cell, compare_lair_cells));
         game->player->has_trap--;
-        sprintf(game->footer_text, "Trap set at (%d, %d)",
-                game->player->coords.x, game->player->coords.y);
-        render_gamescreen();
-        minotaur_move();
     }
 }
 
@@ -61,13 +57,18 @@ void
 player_enters_exit_cell(t_cell *cell) {
     (void) cell;
     game->gamescene = WIN;
-    render_gamescreen();
+}
+
+void
+player_dies() {
+    game->gamescene = LOSE;
 }
 
 void
 minotaur_enters_player_cell() {
-    game->gamescene = LOSE;
-    render_gamescreen();
+    game->player->health -= MINOTAUR_DAMAGE;
+    if (is_player_dead())
+        player_dies();
 }
 
 void

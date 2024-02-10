@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:48:11 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/04 19:58:30 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 09:50:51 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ keypress_gamescene(int ks) {
         move(DOWN);
     if (ks == 0x64 || ks == 0x44)   // D
         move(RIGHT);
-    if (ks == 0xFF0D && game->player->has_trap)   // ENTER
+    if (ks == 0xFF0D)   // ENTER
         set_trap();
     return (0);
 }
