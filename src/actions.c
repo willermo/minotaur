@@ -39,6 +39,31 @@ update_position(t_cell *from, t_cell *to) {
 }
 
 void
+move(t_movement direction) {
+    t_cell *from = get_cell_from_coords(game->player->coords);
+    t_cell *to = NULL;
+    int x = game->player->coords.x;
+    int y = game->player->coords.y;
+
+    switch (direction) {
+    case UP:
+        to = get_cell_from_coords((t_point){x, y - 1});
+        break;
+    case DOWN:
+        to = get_cell_from_coords((t_point){x, y + 1});
+        break;
+    case LEFT:
+        to = get_cell_from_coords((t_point){x - 1, y});
+        break;
+    case RIGHT:
+        to = get_cell_from_coords((t_point){x + 1, y});
+        break;
+    }
+    if (to)
+        update_position(from, to);
+}
+
+void
 set_trap() {
     if (!game->player->has_trap)
         return;
@@ -47,34 +72,4 @@ set_trap() {
             game->player->coords.y);
     render_gamescreen();
     minotaur_move();
-}
-
-void
-move(t_movement direction) {
-    t_cell *from;
-    t_cell *to;
-
-    from = get_cell_from_coords(game->player->coords);
-    switch (direction) {
-    case UP:
-        to = get_cell_from_coords(
-            (t_point){game->player->coords.x, game->player->coords.y - 1});
-        break;
-    case DOWN:
-        to = get_cell_from_coords(
-            (t_point){game->player->coords.x, game->player->coords.y + 1});
-        break;
-    case LEFT:
-        to = get_cell_from_coords(
-            (t_point){game->player->coords.x - 1, game->player->coords.y});
-        break;
-    case RIGHT:
-        to = get_cell_from_coords(
-            (t_point){game->player->coords.x + 1, game->player->coords.y});
-        break;
-    }
-    if (!to)
-        return;
-    // todo: catch and bind events
-    update_position(from, to);
 }
