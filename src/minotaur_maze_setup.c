@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:28:41 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 21:14:09 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 21:34:44 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ build_lair() {
 static void
 initialize_maze() {
     char **maze = game->map->grid;
+    int i;
 
     // Initializes all cells as walls
     for (int i = 0; i < ROWS; i++)
@@ -87,7 +88,14 @@ initialize_maze() {
             break;
         }
     }
-    maze[1][COLS - 2] = '0';
+    i = 1;
+    while (i < ROWS - 1) {
+        if (maze[i][COLS - 2] == '0')
+            break;
+        maze[i][COLS - 2] = '0';
+        if (maze[i++][COLS - 3] == '0')
+            break;
+    }
 }
 
 void
