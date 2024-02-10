@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:09:07 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 11:33:15 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 12:34:50 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ typedef struct s_point {
     int y;
 } t_point;
 
+typedef enum e_rescale_algorithm {
+    NEAREST_NEIGHBOUR,
+    BILINEAR,
+    BICUBIC
+} t_rescale_algorithm;
+
 typedef int t_rgba;
 typedef unsigned char t_rgb_c;
 // defned in mlx_helpers.c
@@ -43,6 +49,7 @@ void init_system(t_display *display, int width, int height, char *title);
 void shutdown_system(t_display *display);
 int get_endianness(void);
 // defined in mlx_image.c
+void substitute_images(t_image *dst, t_image *src);
 t_image *create_image(t_display *display, int width, int height);
 t_image *load_xpm_image(t_display *display, char *path);
 void add_image(t_display *display, t_image *img, t_point p);
@@ -66,4 +73,11 @@ int get_pixel_color(t_image *image, int x, int y);
 int blend(int src, int dst, double alpha);
 // defined in mlx_utils_sprites.c
 void apply_sprite_to_image(t_image *img, t_image *sprite, t_point pos);
+// defined in mlx_utils_images_scaling.c
+void interpolate_pixels_bicubic(t_image *src, t_image *dst, int x, int y);
+void interpolate_pixels_bilinear(t_image *src, t_image *dst, int x, int y);
+void interpolate_pixels_nearest_neighbour(t_image *src, t_image *dst, int x,
+                                          int y);
+void rescale_image(t_display *display, t_image *image, int width, int height,
+                   t_rescale_algorithm method);
 #endif

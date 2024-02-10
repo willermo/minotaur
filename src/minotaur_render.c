@@ -6,7 +6,7 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:33:31 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 20:24:59 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 13:06:23 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ setup_refresh(t_component comp, t_image ***ptr, t_image **refresh) {
         *ptr = &game->components->header;
         if (game->gamescene != GAME) {
             *refresh = load_xpm_image(&game->display, XPM_HEADER);
+            rescale_image(&game->display, *refresh, HEADER_W, HEADER_H,
+                          BICUBIC);
         } else {
             if (game->player->has_trap)
                 *refresh = load_xpm_image(&game->display, XPM_STATS_TRAP);

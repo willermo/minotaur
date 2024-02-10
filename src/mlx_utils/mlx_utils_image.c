@@ -6,13 +6,24 @@
 /*   By: doriani <doriani@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:16:44 by doriani           #+#    #+#             */
-/*   Updated: 2024/02/08 14:02:53 by doriani          ###   ########.fr       */
+/*   Updated: 2024/02/10 11:04:10 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "mlx_utils.h"
 #include <stdlib.h>
+
+void
+substitute_images(t_image *dst, t_image *src) {
+    dst->img = src->img;
+    dst->addr = src->addr;
+    dst->width = src->width;
+    dst->height = src->height;
+    dst->bits_per_pixel = src->bits_per_pixel;
+    dst->line_length = src->line_length;
+    dst->endian = src->endian;
+}
 
 t_image *
 create_image(t_display *display, int width, int height) {
